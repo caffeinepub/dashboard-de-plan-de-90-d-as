@@ -1,0 +1,19 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-18T23:53:00.971Z",
+  "summary": "The diff implements all four requirements: checkbox replacement for status dropdown (REQ-22), backend binary status model (REQ-23), progress calculation updates for binary completion (REQ-24), and always-visible notes sections (REQ-25). The implementation is complete with frontend checkbox UI, backend migration from three-state to binary completed field, updated progress calculations checking task.completed boolean, and notes sections rendered without collapse/expand behavior.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.95,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/components/TaskCard.tsx",
+    "frontend/src/components/TaskForm.tsx",
+    "frontend/src/hooks/useTasks.ts",
+    "frontend/src/utils/progressUtils.ts",
+    "project_state.json"
+  ]
+}

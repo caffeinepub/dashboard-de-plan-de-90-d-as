@@ -1,0 +1,59 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-replace-the-status-dropdown-selector-in-taskcard-component-with-a-functional-checkbox-that-toggles-between-completed-on-and-not-completed-off-states-for-each-milestone-task",
+      "featureTitle": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "files": [
+        "frontend/src/components/TaskCard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-22"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-progress-calculation-logic-in-progressutils-ts-to-work-with-binary-checkbox-completion-status-instead-of-three-state-dropdown-status",
+      "featureTitle": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "files": [
+        "frontend/src/utils/progressUtils.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-24"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-remove-the-collapsible-expandable-behavior-from-the-notes-section-in-taskcard-so-that-notes-are-always-visible-and-editable-by-default",
+      "featureTitle": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+      "files": [
+        "frontend/src/components/TaskCard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-25"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

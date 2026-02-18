@@ -1,0 +1,58 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Replace status dropdowns with ON/OFF checkboxes and make notes always open",
+  "requirements": [
+    {
+      "id": "REQ-22",
+      "summary": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "acceptanceCriteria": [
+        "Each task card displays a checkbox instead of the status dropdown",
+        "Clicking the checkbox toggles between checked (completed) and unchecked (not completed)",
+        "The checkbox visually indicates the task's completion state",
+        "Checkbox changes persist and update the backend task status"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/TaskCard.tsx",
+          "operation": "modify",
+          "description": "Replace the status dropdown selector with a checkbox input that toggles the task's completed state. Remove the Select component and related status dropdown UI. Add a checkbox that calls the completeTask mutation from useTasks hook when toggled, passing the task ID and the new boolean completion state. Display the checkbox prominently with appropriate styling and labels in Spanish (e.g., 'Completada'). Ensure the checkbox reflects the current task.completed boolean value from the backend."
+        }
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "summary": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "acceptanceCriteria": [
+        "Progress calculations correctly count checked tasks as complete",
+        "Progress calculations correctly count unchecked tasks as incomplete",
+        "Phase and milestone progress indicators update accurately based on checkbox states",
+        "Overall project progress reflects binary completion tracking"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/utils/progressUtils.ts",
+          "operation": "modify",
+          "description": "Update all progress calculation functions to use the task.completed boolean field directly instead of checking status string values. Modify getMilestoneProgress, getPhaseProgress, and getOverallProgress functions to count tasks where completed === true as complete and completed === false as incomplete. Remove any logic that checks for status string values like 'completed', 'in-progress', or 'pending'. Ensure percentage calculations work correctly with binary completion tracking."
+        }
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "summary": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+      "acceptanceCriteria": [
+        "Notes section is always visible for each task without requiring expansion",
+        "Notes textarea is immediately accessible for editing",
+        "No collapse/expand toggle button or state for notes section",
+        "Users can add and edit notes without any extra clicks"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/TaskCard.tsx",
+          "operation": "modify",
+          "description": "Remove the collapsible/expandable behavior from the notes section. Eliminate any state variables controlling notes visibility (e.g., isNotesOpen). Remove toggle buttons or icons that expand/collapse notes. Display the notes textarea and content directly in the card UI without requiring user interaction to reveal it. Keep the existing notes editing functionality (textarea with handleNotesChange and handleNotesBlur) but make it always visible. Adjust layout and spacing to accommodate the always-visible notes section while maintaining Spanish labels."
+        }
+      ]
+    }
+  ]
+}

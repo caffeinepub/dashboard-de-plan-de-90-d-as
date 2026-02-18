@@ -1,2 +1,3 @@
-# dashboard-de-plan-de-90-d-as
-Exported from Caffeine project: Dashboard de Plan de 90 Días
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

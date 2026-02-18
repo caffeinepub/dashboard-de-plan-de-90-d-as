@@ -1,0 +1,304 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 9,
+  "summary": "Dashboard en español para un plan de 90 días de creación de sistema de generación de leads para lesiones personales en Utah (web/chatbots/ads), incluyendo estrategia, branding, SEO, automatización y paid ads",
+  "architectural_notes": [
+    "Interfaz en español",
+    "Sistema de planificación con horizonte temporal de 90 días",
+    "Proyecto específico: sistema de generación de leads para lesiones personales en Utah",
+    "Plan estructurado en 6 fases con 18 hitos medibles",
+    "Incluye estrategia de dominio, branding (azul oscuro + amarillo), SEO, CRM, automatización y paid ads",
+    "Objetivo: costo por firmado de $500 o menos al día 90",
+    "Stack técnico: Google Analytics 4, GTM, Meta Pixel, CRM (HubSpot/GoHighLevel), chatbot web/Messenger",
+    "Fecha de inicio del proyecto: 20 de febrero 2026",
+    "Notas internas por milestone para seguimiento del equipo",
+    "Sistema de tracking de progreso debe usar checkboxes ON/OFF simples por milestone (no dropdown de estados)"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-create-a-main-dashboard-interface-in-spanish-that-displays-a-90-day-plan-for-system-creation-showing-three-main-tracks-web-development-chatbots-and-ads",
+      "title": "Create a main dashboard interface in Spanish that displays a 90-day plan for system creation, showing three main tracks: web development, chatbots, and ads",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-visual-progress-tracking-system-that-shows-the-status-and-completion-of-tasks-across-the-90-day-timeline-for-each-track-web-chatbots-ads",
+      "title": "Implement a visual progress tracking system that shows the status and completion of tasks across the 90-day timeline for each track (web, chatbots, ads)",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-functionality-to-add-edit-and-update-tasks-within-each-track-web-chatbots-ads-throughout-the-90-day-timeline",
+      "title": "Implement functionality to add, edit, and update tasks within each track (web, chatbots, ads) throughout the 90-day timeline",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-a-cohesive-visual-theme-with-modern-professional-styling-that-emphasizes-clarity-and-progress-visualization-using-a-distinct-color-scheme-that-avoids-blue-and-purple",
+      "title": "Design a cohesive visual theme with modern, professional styling that emphasizes clarity and progress visualization, using a distinct color scheme that avoids blue and purple",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-phase-navigation-to-the-dashboard-ui-that-displays-all-6-phases-as-clickable-tabs-or-segments-showing-phase-number-day-range-1-14-15-30-31-45-46-60-61-75-76-90-and-spanish-phase-title-arquitectura-estrat-gica-y-fundamentos-construcci-n-web-seo-base-automatizaci-n-y-backend-social-y-activos-digitales-lanzamiento-de-paid-ads-optimizaci-n-y-escalado",
+      "title": "Add phase navigation to the dashboard UI that displays all 6 phases as clickable tabs or segments showing phase number, day range (1-14, 15-30, 31-45, 46-60, 61-75, 76-90), and Spanish phase title (Arquitectura Estratégica y Fundamentos, Construcción Web + SEO Base, Automatización y Backend, Social y Activos Digitales, Lanzamiento de Paid Ads, Optimización y Escalado)",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-display-milestones-as-expandable-collapsible-sections-within-each-phase-showing-milestone-number-1-18-spanish-title-with-emoji-day-range-and-full-detailed-content-from-the-flight-plan-including-all-sub-items-criteria-questions-requirements-and-notes",
+      "title": "Display milestones as expandable/collapsible sections within each phase showing milestone number (1-18), Spanish title with emoji, day range, and full detailed content from the flight plan including all sub-items, criteria, questions, requirements, and notes",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-task-creation-and-editing-ui-to-allow-users-to-associate-tasks-with-specific-phases-1-6-and-milestones-1-18-using-dropdown-selectors-with-spanish-labels",
+      "title": "Update task creation and editing UI to allow users to associate tasks with specific phases (1-6) and milestones (1-18) using dropdown selectors with Spanish labels",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-phase-and-milestone-progress-indicators-showing-completion-percentage-and-counts-e-g-3-4-milestones-completed-for-phase-1-12-18-total-milestones-completed-calculated-from-task-completion-status",
+      "title": "Add phase and milestone progress indicators showing completion percentage and counts (e.g., '3/4 milestones completed' for Phase 1, '12/18 total milestones completed') calculated from task completion status",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-three-track-system-web-chatbot-ads-with-the-new-six-phase-structure-while-preserving-existing-task-data-by-migrating-web-chatbot-ads-tasks-to-appropriate-phases-based-on-their-nature-and-timeline",
+      "title": "Replace the current three-track system (web, chatbot, ads) with the new six-phase structure while preserving existing task data by migrating web/chatbot/ads tasks to appropriate phases based on their nature and timeline",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-date-calculation-system-to-use-february-20-2026-as-the-start-date-for-the-90-day-plan-calculating-all-phase-and-milestone-dates-based-on-this-fixed-start-date-instead-of-relative-day-numbers",
+      "title": "Update the date calculation system to use February 20, 2026 as the start date for the 90-day plan, calculating all phase and milestone dates based on this fixed start date instead of relative day numbers",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-checkbox-completion-indicator-in-milestonesection-with-a-dropdown-selector-showing-three-status-options-en-progreso-terminado-pausado-for-each-milestone-s-tasks",
+      "title": "Replace the current checkbox completion indicator in MilestoneSection with a dropdown selector showing three status options: 'En progreso', 'Terminado', 'Pausado' for each milestone's tasks",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-progress-calculation-logic-in-progressutils-ts-to-consider-milestone-completion-based-on-task-status-only-tasks-marked-terminado-count-as-complete-while-en-progreso-and-pausado-tasks-count-as-incomplete",
+      "title": "Update the progress calculation logic in progressUtils.ts to consider milestone completion based on task status: only tasks marked 'Terminado' count as complete, while 'En progreso' and 'Pausado' tasks count as incomplete",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-expandable-notes-section-to-each-task-card-in-milestonesection-that-allows-viewing-and-editing-internal-team-notes-for-tracking-actions-and-follow-ups",
+      "title": "Add an expandable notes section to each task card in MilestoneSection that allows viewing and editing internal team notes for tracking actions and follow-ups",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-ads-dashboard-page-component-as-a-separate-tab-showing-monthly-metrics-input-form-and-a-data-table-displaying-all-entered-months-with-spent-leads-appointments-and-converted-columns",
+      "title": "Create a new ADS dashboard page component as a separate tab showing monthly metrics input form and a data table displaying all entered months with Spent, Leads, Appointments, and Converted columns",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-automatic-report-generation-to-the-ads-dashboard-that-calculates-and-displays-key-performance-metrics-including-cost-per-lead-spent-leads-appointment-rate-appointments-leads-conversion-rate-converted-appointments-and-cost-per-conversion-spent-converted-for-each-month",
+      "title": "Add automatic report generation to the ADS dashboard that calculates and displays key performance metrics including Cost per Lead (Spent/Leads), Appointment Rate (Appointments/Leads %), Conversion Rate (Converted/Appointments %), and Cost per Conversion (Spent/Converted) for each month",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-status-dropdown-selector-in-taskcard-component-with-a-functional-checkbox-that-toggles-between-completed-on-and-not-completed-off-states-for-each-milestone-task",
+      "title": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-progress-calculation-logic-in-progressutils-ts-to-work-with-binary-checkbox-completion-status-instead-of-three-state-dropdown-status",
+      "title": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-the-collapsible-expandable-behavior-from-the-notes-section-in-taskcard-so-that-notes-are-always-visible-and-editable-by-default",
+      "title": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-7",
+      "summary": "Create backend data model to store and manage plan tasks, milestones, and progress states for the 90-day system creation plan across all three tracks",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Integrar plan de 6 fases (días 1-90) con 18 hitos específicos en el dashboard",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Fase 1 (días 1-14): Arquitectura Estratégica - modelo de negocio, dominio, branding, estructura legal",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Fase 2 (días 15-30): Construcción Web + SEO - arquitectura del sitio, SEO base, configuración técnica",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Fase 3 (días 31-45): Automatización y Backend - CRM, automatizaciones, chatbot",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Fase 4 (días 46-60): Social y Activos Digitales - redes sociales, recolección de activos",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Fase 5 (días 61-75): Lanzamiento de Paid Ads - Google Ads, Facebook Ads, call tracking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Fase 6 (días 76-90): Optimización y Escalado - análisis de métricas, ajuste de funnel, evaluación de modelo",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Extend backend Task data model to include phase field (1-6), milestone number field (1-18), and detailed content field for storing phase-specific information (business model questions, domain criteria, branding requirements, legal structure items, site architecture, SEO tasks, CRM pipeline stages, automation workflows, chatbot flows, social media plans, ad campaign details, and optimization metrics)",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Pre-populate the dashboard with all 18 milestones from the 6-phase plan: Phase 1 (days 1-14) includes 4 milestones - Business Model Definition, Domain Strategy, Branding, Legal Structure; Phase 2 (days 15-30) includes 3 milestones - Site Architecture, Base SEO, Technical Configuration; Phase 3 (days 31-45) includes 3 milestones - CRM, Automations, Chatbot; Phase 4 (days 46-60) includes 2 milestones - Social Media, Asset Collection; Phase 5 (days 61-75) includes 3 milestones - Google Ads, Facebook Ads, Call Tracking; Phase 6 (days 76-90) includes 3 milestones - Key Metrics Analysis, Funnel Adjustment, Model Evaluation",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Agregar fechas reales al plan de 90 días con inicio el 20 de febrero 2026, calculando las fechas de cada fase y milestone basándose en esta fecha de inicio",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Implementar selector de estado para cada milestone con opciones 'En progreso', 'Terminado', 'Pausado' que influya en el cálculo del progreso general de fases y del proyecto",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Agregar funcionalidad de notas internas editables para cada milestone que permita al equipo documentar acciones, seguimiento y próximos pasos",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-20",
+      "summary": "Crear dashboard o pestaña separada 'ADS' organizada por meses donde se puedan introducir métricas (Spent/Leads/Appointments/Converted) y generar reportes automáticos de desempeño publicitario",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-22",
+      "summary": "Add a status field to the Task data model in the backend with three possible values: 'En progreso' (In Progress), 'Terminado' (Completed), 'Pausado' (Paused)",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-25",
+      "summary": "Add a notes field to the Task data model in the backend to store internal team notes for each milestone task",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-27",
+      "summary": "Create a new backend data model for ADS metrics that stores monthly advertising data including Spent (amount), Leads (count), Appointments (count), and Converted (count) fields, with methods to add and query metrics by month",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-28",
+      "summary": "Replace the status dropdown selector with functional ON/OFF checkboxes for each milestone to enable simple binary progress tracking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-29",
+      "summary": "Change the notes section from read-only/collapsed to always open and editable by default for each milestone",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-31",
+      "summary": "Update the backend Task status model to support binary completion tracking compatible with checkbox interface (completed vs not completed)",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Dashboard de Plan de 90 Días",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

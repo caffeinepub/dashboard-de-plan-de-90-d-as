@@ -1,0 +1,94 @@
+{
+  "kind": "build_request",
+  "title": "Replace status dropdowns with ON/OFF checkboxes and make notes always open",
+  "projectName": "90-Day Flight Plan",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-22",
+      "text": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "no veo que tenga checkboxes, nose como funciona el sistema de tracking de progreso (es imperativo que cada hito tenga un checkbox funcional ON/OFF)"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Each task card displays a checkbox instead of the status dropdown",
+        "Clicking the checkbox toggles between checked (completed) and unchecked (not completed)",
+        "The checkbox visually indicates the task's completion state",
+        "Checkbox changes persist and update the backend task status"
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "text": "Update the backend Task status model to support binary completion tracking compatible with checkbox interface (completed vs not completed)",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "es imperativo que cada hito tenga un checkbox funcional ON/OFF"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend accepts and stores binary completion status for tasks",
+        "Status updates from checkbox interactions are properly saved",
+        "Migration handles conversion of existing three-state status to binary completed/not-completed"
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Progress calculations correctly count checked tasks as complete",
+        "Progress calculations correctly count unchecked tasks as incomplete",
+        "Phase and milestone progress indicators update accurately based on checkbox states",
+        "Overall project progress reflects binary completion tracking"
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "las notas deben ser abiertas para agregar mas, estan cerradas ahora"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Notes section is always visible for each task without requiring expansion",
+        "Notes textarea is immediately accessible for editing",
+        "No collapse/expand toggle button or state for notes section",
+        "Users can add and edit notes without any extra clicks"
+      ]
+    }
+  ],
+  "constraints": [
+    "Preserve existing task data during status model transition from three-state to binary",
+    "Maintain Spanish language labels throughout the interface",
+    "Keep the fixed start date of February 20, 2026 for all date calculations"
+  ],
+  "nonGoals": [
+    "Changing the overall phase and milestone structure",
+    "Modifying the ADS dashboard functionality",
+    "Altering the six-phase navigation system"
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
