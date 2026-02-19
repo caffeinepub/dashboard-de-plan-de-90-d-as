@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-remove-all-checkbox-based-progress-tracking-functionality-from-milestonesection-and-taskcard-components",
-      "featureTitle": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
+      "featureId": "feature-fix-the-updatemilestoneprogressmutation-in-usetasks-ts-to-correctly-pass-milestoneid-and-progress-percentage-to-the-backend-actor-s-updatemilestoneprogress-method",
+      "featureTitle": "Fix the updateMilestoneProgressMutation in useTasks.ts to correctly pass milestoneId and progress percentage to the backend actor's updateMilestoneProgress method",
       "files": [
-        "frontend/src/components/MilestoneSection.tsx",
-        "frontend/src/components/TaskCard.tsx"
+        "frontend/src/hooks/useTasks.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -16,13 +15,13 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-44"
+        "REQ-57"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-add-a-manual-slider-control-to-each-milestone-card-that-allows-direct-adjustment-of-progress-percentage-from-0-to-100",
-      "featureTitle": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
+      "featureId": "feature-debug-the-slider-onchange-handler-in-milestonesection-tsx-to-ensure-it-correctly-triggers-the-updatemilestoneprogressmutation-with-the-milestone-id-and-new-progress-value",
+      "featureTitle": "Debug the slider onChange handler in MilestoneSection.tsx to ensure it correctly triggers the updateMilestoneProgressMutation with the milestone ID and new progress value",
       "files": [
         "frontend/src/components/MilestoneSection.tsx"
       ],
@@ -34,54 +33,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-45"
+        "REQ-58"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-create-react-query-mutation-hook-in-usetasks-that-calls-the-backend-updatemilestoneprogress-method-when-slider-value-changes",
-      "featureTitle": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
-      "files": [
-        "frontend/src/hooks/useTasks.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-48"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-update-progressutils-ts-to-calculate-phase-and-overall-progress-based-on-manually-set-milestone-progress-percentages-instead-of-task-completion-counts",
-      "featureTitle": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
-      "files": [
-        "frontend/src/components/OverallProgress.tsx",
-        "frontend/src/components/PhaseNavigation.tsx",
-        "frontend/src/utils/progressUtils.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-49"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-remove-all-completetask-mutation-calls-task-completion-state-management-and-checkbox-related-event-handlers-from-the-frontend-codebase",
-      "featureTitle": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+      "featureId": "feature-add-comprehensive-console-logging-throughout-the-slider-interaction-flow-slider-onchange-mutation-call-backend-actor-method-backend-update-response-cache-invalidation-ui-refresh",
+      "featureTitle": "Add comprehensive console logging throughout the slider interaction flow: slider onChange → mutation call → backend actor method → backend update → response → cache invalidation → UI refresh",
       "files": [
         "frontend/src/components/MilestoneSection.tsx",
-        "frontend/src/components/TaskCard.tsx",
         "frontend/src/hooks/useTasks.ts"
       ],
       "components": [
@@ -92,7 +52,63 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-50"
+        "REQ-59"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-react-query-cache-invalidation-triggers-correctly-after-updatemilestoneprogress-mutation-success-forcing-a-fresh-fetch-of-milestone-data-that-includes-the-updated-progress-percentage",
+      "featureTitle": "Ensure React Query cache invalidation triggers correctly after updateMilestoneProgress mutation success, forcing a fresh fetch of milestone data that includes the updated progress percentage",
+      "files": [
+        "frontend/src/hooks/useTasks.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-61"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-fix-error-handling-in-the-slider-mutation-flow-to-display-clear-user-friendly-error-messages-in-spanish-when-updatemilestoneprogress-fails-including-specific-details-about-what-went-wrong",
+      "featureTitle": "Fix error handling in the slider mutation flow to display clear, user-friendly error messages in Spanish when updateMilestoneProgress fails, including specific details about what went wrong",
+      "files": [
+        "frontend/src/components/MilestoneSection.tsx",
+        "frontend/src/hooks/useTasks.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-62"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-test-the-complete-end-to-end-slider-flow-manually-move-slider-onchange-fires-mutation-called-backend-updates-cache-invalidates-ui-refreshes-with-persisted-value-and-fix-any-breaking-point-in-this-chain",
+      "featureTitle": "Test the complete end-to-end slider flow manually: move slider → onChange fires → mutation called → backend updates → cache invalidates → UI refreshes with persisted value, and fix any breaking point in this chain",
+      "files": [
+        "frontend/src/components/MilestoneSection.tsx",
+        "frontend/src/hooks/useTasks.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-63"
       ],
       "confidence": "high"
     }

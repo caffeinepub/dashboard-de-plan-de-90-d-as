@@ -1,13 +1,10 @@
 import Runtime "mo:core/Runtime";
 import Array "mo:core/Array";
 import Map "mo:core/Map";
-import Iter "mo:core/Iter";
 import Nat "mo:core/Nat";
 import Time "mo:core/Time";
 import Order "mo:core/Order";
-import Migration "migration";
 
-(with migration = Migration.run)
 actor {
   type Task = {
     id : Nat;

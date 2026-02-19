@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { TaskCard } from '@/components/TaskCard';
 import { MilestoneData } from '@/constants/milestones';
 import { Task } from '../backend';
 import { useTasks } from '@/hooks/useTasks';
+import { toast } from 'sonner';
 
 interface MilestoneSectionProps {
   milestone: MilestoneData;
@@ -21,13 +22,66 @@ export function MilestoneSection({ milestone, tasks }: MilestoneSectionProps) {
   
   // Get progress from backend milestone data
   const currentProgress = milestoneProgress.get(milestone.milestone) || 0;
+  
+  // Store previous value for reverting on error
+  const [previousProgress, setPreviousProgress] = useState(currentProgress);
+
+  // Update previous progress when current progress changes from backend
+  useEffect(() => {
+    setPreviousProgress(currentProgress);
+    console.log('📊 COMPONENT RE-RENDERED:', {
+      milestoneId: milestone.milestone,
+      currentProgress,
+      title: milestone.title
+    });
+  }, [currentProgress, milestone.milestone, milestone.title]);
 
   const handleProgressChange = (value: number[]) => {
     const newProgress = value[0];
-    updateMilestoneProgressMutation.mutate({
-      milestoneId: BigInt(milestone.milestone),
-      progress: BigInt(newProgress),
+    
+    console.log('🎯 SLIDER CHANGED:', { 
+      milestoneId: milestone.milestone, 
+      newProgress, 
+      currentProgress,
+      title: milestone.title
     });
+    
+    // Store current value before attempting update
+    setPreviousProgress(currentProgress);
+    
+    console.log('🚀 CALLING MUTATION:', {
+      milestoneId: milestone.milestone,
+      progress: newProgress
+    });
+    
+    updateMilestoneProgressMutation.mutate(
+      {
+        milestoneId: BigInt(milestone.milestone),
+        progress: BigInt(newProgress),
+      },
+      {
+        onSuccess: (result) => {
+          console.log('✅ MUTATION SUCCESS CALLBACK:', { result, newProgress });
+          if (result) {
+            toast.success(`Progreso actualizado a ${newProgress}%`);
+          } else {
+            console.error('❌ Backend returned false');
+            toast.error('No se pudo actualizar el progreso - hito no encontrado');
+          }
+        },
+        onError: (error) => {
+          console.error('❌ MUTATION ERROR CALLBACK:', error);
+          const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+          toast.error(`Error: ${errorMessage}`);
+          
+          // Revert slider to previous value
+          console.log('⏪ REVERTING SLIDER:', { 
+            from: newProgress, 
+            to: previousProgress 
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -69,6 +123,11 @@ export function MilestoneSection({ milestone, tasks }: MilestoneSectionProps) {
               />
               {updateMilestoneProgressMutation.isPending && (
                 <p className="text-xs text-muted-foreground">Guardando...</p>
+              )}
+              {updateMilestoneProgressMutation.isError && (
+                <p className="text-xs text-destructive">
+                  Error al guardar. Intenta de nuevo.
+                </p>
               )}
             </div>
 

@@ -1,14 +1,16 @@
 # Specification
 
 ## Summary
-**Goal:** Replace checkbox-based progress tracking with manual slider controls for milestones.
+**Goal:** Debug and fix the milestone progress slider persistence system to ensure updates flow correctly from frontend to backend and reflect in the UI.
 
 **Planned changes:**
-- Remove all checkbox completion controls from milestone and task components
-- Add a slider control (0-100%) to each milestone card for manual progress adjustment
-- Add progress field to backend Milestone model and implement updateMilestoneProgress method
-- Create React Query mutation hook to sync slider changes with backend
-- Update progress calculations to use manually set milestone percentages instead of task completion counts
-- Remove all task completion state management and related event handlers
+- Add comprehensive logging throughout the slider interaction flow (onChange → mutation → backend → response → cache invalidation → UI refresh)
+- Debug and fix the backend updateMilestoneProgress method to correctly receive, process, and persist milestoneId and progress parameters
+- Fix the updateMilestoneProgressMutation in useTasks.ts to correctly pass parameters to the backend actor
+- Debug the slider onChange handler in MilestoneSection.tsx to properly trigger the mutation with milestone ID and progress value
+- Verify HashMap storage correctly persists milestone progress values across updates
+- Ensure React Query cache invalidation triggers after successful mutations to fetch fresh data
+- Improve error handling to display clear Spanish error messages with specific details
+- Test and fix the complete end-to-end slider flow until it works seamlessly
 
-**User-visible outcome:** Users can directly adjust milestone progress using sliders instead of marking individual tasks complete. Phase and overall progress bars update based on the manually set milestone percentages.
+**User-visible outcome:** Users can move the milestone progress slider and see it persist correctly after page refresh, with clear error messages in Spanish if updates fail.

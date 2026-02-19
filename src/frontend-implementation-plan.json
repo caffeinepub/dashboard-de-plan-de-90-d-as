@@ -1,119 +1,128 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace milestone checkbox progress with manual slider control",
+  "title": "Debug and fix slider progress persistence system",
   "requirements": [
     {
-      "id": "REQ-44",
-      "summary": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
+      "id": "REQ-57",
+      "summary": "Fix the updateMilestoneProgressMutation in useTasks.ts to correctly pass milestoneId and progress percentage to the backend actor's updateMilestoneProgress method",
       "acceptanceCriteria": [
-        "No checkboxes are displayed for milestone or task completion",
-        "TaskCard components no longer include completion toggle controls",
-        "MilestoneSection header click behavior is disabled"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/MilestoneSection.tsx",
-          "operation": "modify",
-          "description": "Remove the clickable header behavior that toggles completion of all tasks within the milestone. Remove all console logging related to toggle interactions. Keep the expandable card structure but disable the completion toggle functionality."
-        },
-        {
-          "path": "frontend/src/components/TaskCard.tsx",
-          "operation": "modify",
-          "description": "Remove the checkbox input control for task completion. Remove all event handlers related to task completion toggling. Remove completion state management logic. Keep the task display structure, edit button, notes textarea, and due date information intact."
-        },
-        {
-          "path": "frontend/src/components/ProgressIndicator.tsx",
-          "operation": "modify",
-          "description": "Remove or simplify the component since task-level completion status is no longer tracked. This component may be repurposed or removed entirely depending on whether any visual indicators are still needed."
-        }
-      ]
-    },
-    {
-      "id": "REQ-45",
-      "summary": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
-      "acceptanceCriteria": [
-        "Each milestone displays a horizontal slider input",
-        "Slider range is 0-100 representing percentage completion",
-        "Current progress percentage value is displayed next to the slider",
-        "Slider is fully interactive and responsive to user input"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/MilestoneSection.tsx",
-          "operation": "modify",
-          "description": "Add a horizontal slider input control to the milestone card header or body. The slider should have a range of 0-100 representing percentage completion. Display the current progress percentage value next to the slider (e.g., '45%'). Connect the slider to the updateMilestoneProgress mutation from useTasks hook. Ensure the slider is styled consistently with the warm earth-tones color scheme and is fully interactive."
-        }
-      ]
-    },
-    {
-      "id": "REQ-48",
-      "summary": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
-      "acceptanceCriteria": [
-        "Hook provides updateMilestoneProgress mutation function",
-        "Mutation successfully calls backend actor method",
-        "Mutation invalidates progress-related queries on success",
-        "Optimistic updates show immediate slider movement"
+        "The mutation receives milestoneId and progress as parameters",
+        "The mutation calls actor.updateMilestoneProgress with correct argument format",
+        "Console logs show the mutation is triggered when slider moves",
+        "The mutation handles the backend response correctly",
+        "Error responses are caught and logged with full details"
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useTasks.ts",
           "operation": "modify",
-          "description": "Add a new React Query mutation called updateMilestoneProgress that accepts milestoneId (bigint) and progress (bigint) parameters. The mutation should call actor.updateMilestoneProgress(milestoneId, progress). On success, invalidate queries related to milestones and progress calculations to trigger refetch. Implement optimistic updates to show immediate slider movement before backend confirmation. Return the mutation function for use in components."
+          "description": "Add comprehensive console logging to updateMilestoneProgressMutation to log the received milestoneId and progress parameters at the start of the mutation. Verify the mutation calls actor.updateMilestoneProgress with the correct argument types (bigint for milestoneId, bigint for progress). Add console logging for the backend response in the onSuccess callback. Enhance error handling in the onError callback to log the full error object, error message, and error stack trace to help identify why the update fails."
         }
       ]
     },
     {
-      "id": "REQ-49",
-      "summary": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
+      "id": "REQ-58",
+      "summary": "Debug the slider onChange handler in MilestoneSection.tsx to ensure it correctly triggers the updateMilestoneProgressMutation with the milestone ID and new progress value",
       "acceptanceCriteria": [
-        "Phase progress is calculated as average of milestone progress values within that phase",
-        "Overall progress is calculated as average of all milestone progress values",
-        "Progress bars and percentages update immediately when slider values change",
-        "Calculations ignore task completion status entirely"
+        "The slider component has a functional onChange or onValueChange handler",
+        "The handler extracts the new progress value from the slider event",
+        "The handler calls updateMilestoneProgressMutation.mutate with milestoneId and progress",
+        "Console logs confirm the handler fires when the slider is moved",
+        "The slider is not disabled or blocked by loading states"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/utils/progressUtils.ts",
+          "path": "frontend/src/components/MilestoneSection.tsx",
           "operation": "modify",
-          "description": "Rewrite all progress calculation functions to use the manually set milestone.progress field instead of counting completed tasks. Calculate phase progress as the average of milestone progress percentages for milestones within that phase. Calculate overall progress as the average of all milestone progress percentages. Remove all logic that references task completion status. Ensure functions accept milestone data with progress fields and return percentage values."
-        },
-        {
-          "path": "frontend/src/components/OverallProgress.tsx",
-          "operation": "modify",
-          "description": "Update to use the new progress calculation functions from progressUtils that work with milestone progress percentages. Ensure the progress bar and percentage display reflect the manually set values and update immediately when slider values change."
-        },
-        {
-          "path": "frontend/src/components/PhaseNavigation.tsx",
-          "operation": "modify",
-          "description": "Update phase progress indicators to use the new calculation functions from progressUtils that work with milestone progress percentages instead of task completion counts. Ensure progress badges update immediately when milestone slider values change."
+          "description": "Add console logging at the start of the slider's onChange or onValueChange handler to log the milestone ID and the new progress value being extracted from the slider event. Verify the handler correctly calls updateMilestoneProgressMutation.mutate with the milestone ID (converted to bigint if necessary) and the progress value (converted to bigint). Check that the slider is not disabled during loading states and that the handler fires immediately when the slider moves. Add a console log confirming the mutation.mutate call with the exact parameters being passed."
         }
       ]
     },
     {
-      "id": "REQ-50",
-      "summary": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+      "id": "REQ-59",
+      "summary": "Add comprehensive console logging throughout the slider interaction flow from slider onChange through mutation call, response, cache invalidation, to UI refresh",
       "acceptanceCriteria": [
-        "useTasks hook no longer includes completeTask mutation",
-        "TaskCard component has no completion toggle logic",
-        "No click handlers remain for task or milestone completion",
-        "All checkbox-related console logging is removed"
+        "Console log when slider onChange handler is triggered with milestone ID and new value",
+        "Console log when updateMilestoneProgressMutation.mutate is called with parameters",
+        "Console log when mutation succeeds or fails with response data",
+        "Console log when React Query invalidates the milestones cache",
+        "Console log when getAllMilestones query refetches data"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MilestoneSection.tsx",
+          "operation": "modify",
+          "description": "Add console logging at the top of the slider onChange handler with a clear label like 'SLIDER CHANGED:' followed by the milestone ID and new progress value. Add another console log immediately before calling updateMilestoneProgressMutation.mutate with a label like 'CALLING MUTATION:' and the parameters being passed. This establishes the start of the debugging chain."
+        },
+        {
+          "path": "frontend/src/hooks/useTasks.ts",
+          "operation": "modify",
+          "description": "Add console logging at the start of updateMilestoneProgressMutation with label 'MUTATION STARTED:' and the received parameters. In the onSuccess callback, add console logging with label 'MUTATION SUCCESS:' and the response data. In the onError callback, add console logging with label 'MUTATION ERROR:' and the full error object. Before calling queryClient.invalidateQueries, add console logging with label 'INVALIDATING CACHE:' and the query keys being invalidated. After invalidation, add console logging with label 'CACHE INVALIDATED' to confirm completion."
+        }
+      ]
+    },
+    {
+      "id": "REQ-61",
+      "summary": "Ensure React Query cache invalidation triggers correctly after updateMilestoneProgress mutation success, forcing a fresh fetch of milestone data that includes the updated progress percentage",
+      "acceptanceCriteria": [
+        "The onSuccess callback in updateMilestoneProgressMutation calls queryClient.invalidateQueries for milestones",
+        "The invalidation targets the correct query key used by getAllMilestones",
+        "The UI re-renders with fresh data after invalidation completes",
+        "The slider displays the persisted progress value from the backend, not just local state"
       ],
       "file_operations": [
         {
           "path": "frontend/src/hooks/useTasks.ts",
           "operation": "modify",
-          "description": "Remove the completeTask mutation entirely from the useTasks hook. Remove all related query invalidation logic that was triggered by task completion. Remove all console logging statements related to task completion. Keep all other task management mutations (add, edit, notes) intact."
-        },
+          "description": "In the updateMilestoneProgressMutation's onSuccess callback, verify that queryClient.invalidateQueries is called with the exact query key used by the getAllMilestones query (check that the key matches, likely ['milestones']). Add console logging before and after the invalidation call to confirm it executes. Ensure the invalidation is awaited or chained properly so the UI refetch completes before the success toast appears. Verify no local state is interfering with displaying the persisted backend value."
+        }
+      ]
+    },
+    {
+      "id": "REQ-62",
+      "summary": "Fix error handling in the slider mutation flow to display clear, user-friendly error messages in Spanish when updateMilestoneProgress fails, including specific details about what went wrong",
+      "acceptanceCriteria": [
+        "The onError callback in updateMilestoneProgressMutation catches all error types",
+        "Error messages distinguish between network failures, backend errors, and validation errors",
+        "Toast notifications display specific error details in Spanish",
+        "The slider reverts to its previous position if the update fails",
+        "Console logs include full error stack traces for debugging"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/components/TaskCard.tsx",
+          "path": "frontend/src/hooks/useTasks.ts",
           "operation": "modify",
-          "description": "Remove all completion toggle logic, click handlers, and state management related to task completion. Remove any console logging related to checkbox interactions. Keep the task display structure, edit functionality, notes management, and due date display fully functional."
+          "description": "Enhance the onError callback in updateMilestoneProgressMutation to detect error types (network errors, backend errors, validation errors) and construct specific Spanish error messages. Log the full error object including stack trace to the console for debugging. Display a toast notification with a clear Spanish error message that includes the error type and any available error details. If possible, include the milestone ID in the error message to help with debugging."
         },
         {
           "path": "frontend/src/components/MilestoneSection.tsx",
           "operation": "modify",
-          "description": "Remove all click handlers for milestone completion toggling. Remove all console logging statements related to toggle interactions. Ensure the component no longer attempts to mark all tasks within a milestone as complete/incomplete."
+          "description": "Store the previous slider value in local state before calling the mutation. If the mutation fails (detected via mutation.isError or a rejected promise), revert the slider to the previous value using a useEffect or direct state update. Add console logging when reverting the slider with label 'REVERTING SLIDER:' and the previous value. This ensures the UI reflects the actual persisted state if the update fails."
+        }
+      ]
+    },
+    {
+      "id": "REQ-63",
+      "summary": "Test the complete end-to-end slider flow manually and ensure all console logs fire in sequence, backend confirms updates, and the persisted value displays correctly after page refresh",
+      "acceptanceCriteria": [
+        "Moving the slider triggers all expected console logs in sequence",
+        "The backend confirms receiving and processing the update request",
+        "The milestone progress value persists after page refresh",
+        "The slider position reflects the value stored in the backend",
+        "No errors appear in console or toast notifications during normal operation",
+        "The flow completes within 2 seconds under normal network conditions"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MilestoneSection.tsx",
+          "operation": "modify",
+          "description": "Add a final verification console log when the component re-renders after a successful mutation with label 'COMPONENT RE-RENDERED:' showing the milestone ID and the new progress value from the refetched data. This confirms the entire cycle completed successfully. Ensure the slider value is bound to the milestone.progress value from the backend query, not from local component state, so it always reflects the persisted backend value."
+        },
+        {
+          "path": "frontend/src/hooks/useTasks.ts",
+          "operation": "modify",
+          "description": "Add a console log in the getAllMilestones query when it successfully fetches data with label 'MILESTONES FETCHED:' and the count of milestones returned. This helps verify that the refetch after invalidation is completing successfully and returning updated data. Add timing logs to measure how long the mutation and refetch cycle takes."
         }
       ]
     }
