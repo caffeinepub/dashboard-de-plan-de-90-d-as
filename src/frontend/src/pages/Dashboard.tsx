@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus, AlertCircle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PhaseNavigation } from '@/components/PhaseNavigation';
 import { OverallProgress } from '@/components/OverallProgress';
 import { MilestoneSection } from '@/components/MilestoneSection';
@@ -11,7 +12,13 @@ import { getMilestonesByPhase } from '@/constants/milestones';
 export function Dashboard() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedPhase, setSelectedPhase] = useState(1);
-  const { tasks, isLoading } = useTasks();
+  const { tasks, isLoading, isError, error, refetch } = useTasks();
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      console.log('[Dashboard] Tasks loaded:', tasks.length);
+    }
+  }, [tasks]);
 
   const phaseMilestones = getMilestonesByPhase(selectedPhase);
 
@@ -32,13 +39,33 @@ export function Dashboard() {
         </Button>
       </div>
 
-      <OverallProgress tasks={tasks} />
+      <OverallProgress />
 
       <PhaseNavigation
-        selectedPhase={selectedPhase}
+        currentPhase={selectedPhase}
         onPhaseChange={setSelectedPhase}
-        tasks={tasks}
       />
+
+      {isError && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error al cargar tareas</AlertTitle>
+          <AlertDescription className="flex items-center justify-between">
+            <span>
+              {error instanceof Error ? error.message : 'No se pudieron cargar las tareas. Por favor, intenta de nuevo.'}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => refetch()}
+              className="ml-4 gap-2"
+            >
+              <RefreshCw className="h-4 w-4" />
+              Reintentar
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
 
       {isLoading ? (
         <div className="flex items-center justify-center py-12">

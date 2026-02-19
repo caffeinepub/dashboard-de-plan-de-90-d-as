@@ -17,6 +17,12 @@ export interface AdsMetrics {
   'appointments' : bigint,
   'converted' : bigint,
 }
+export interface Milestone {
+  'id' : bigint,
+  'name' : string,
+  'description' : string,
+  'progress' : bigint,
+}
 export interface Task {
   'id' : bigint,
   'content' : TaskContent,
@@ -90,6 +96,7 @@ export interface _SERVICE {
     [string, number, bigint, bigint, bigint],
     undefined
   >,
+  'addMilestone' : ActorMethod<[bigint, string, string], undefined>,
   'addTask' : ActorMethod<
     [string, Time, bigint, bigint, string, TaskContent],
     bigint
@@ -105,10 +112,13 @@ export interface _SERVICE {
   'getActiveTasks' : ActorMethod<[], Array<Task>>,
   'getAdsMetricsByMonth' : ActorMethod<[string], [] | [AdsMetrics]>,
   'getAllAdsMetrics' : ActorMethod<[], Array<AdsMetrics>>,
+  'getAllMilestones' : ActorMethod<[], Array<Milestone>>,
   'getAllTasks' : ActorMethod<[], Array<Task>>,
   'getCompletedTasks' : ActorMethod<[], Array<Task>>,
+  'getMilestone' : ActorMethod<[bigint], [] | [Milestone]>,
   'getTasksByMilestone' : ActorMethod<[bigint], Array<Task>>,
   'getTasksByPhase' : ActorMethod<[bigint], Array<Task>>,
+  'updateMilestoneProgress' : ActorMethod<[bigint, bigint], boolean>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

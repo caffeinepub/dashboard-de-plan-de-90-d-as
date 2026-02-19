@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, CheckCircle2, Circle } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Slider } from '@/components/ui/slider';
 import { TaskCard } from '@/components/TaskCard';
 import { MilestoneData } from '@/constants/milestones';
 import { Task } from '../backend';
-import { getMilestoneProgress } from '@/utils/progressUtils';
 import { useTasks } from '@/hooks/useTasks';
 
 interface MilestoneSectionProps {
@@ -16,50 +16,31 @@ interface MilestoneSectionProps {
 
 export function MilestoneSection({ milestone, tasks }: MilestoneSectionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { completeTaskMutation } = useTasks();
+  const { updateMilestoneProgressMutation, milestoneProgress } = useTasks();
   const milestoneTasks = tasks.filter((t) => Number(t.milestone) === milestone.milestone);
-  const progress = getMilestoneProgress(milestone.milestone, tasks);
+  
+  // Get progress from backend milestone data
+  const currentProgress = milestoneProgress.get(milestone.milestone) || 0;
 
-  const handleMilestoneToggle = () => {
-    // Toggle all tasks in this milestone
-    const newCompletedState = !progress.isComplete;
-    milestoneTasks.forEach((task) => {
-      if (task.completed !== newCompletedState) {
-        completeTaskMutation.mutate({
-          taskId: task.id,
-          completed: newCompletedState,
-        });
-      }
+  const handleProgressChange = (value: number[]) => {
+    const newProgress = value[0];
+    updateMilestoneProgressMutation.mutate({
+      milestoneId: BigInt(milestone.milestone),
+      progress: BigInt(newProgress),
     });
   };
 
   return (
-    <Card className={`${progress.isComplete ? 'border-primary/50 bg-primary/5' : ''}`}>
+    <Card className={`${currentProgress === 100 ? 'border-primary/50 bg-primary/5' : ''}`}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
-          <div
-            className="flex-1 cursor-pointer select-none"
-            onClick={handleMilestoneToggle}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleMilestoneToggle();
-              }
-            }}
-          >
+          <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              {progress.isComplete ? (
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0" />
-              ) : (
-                <Circle className="h-5 w-5 text-muted-foreground shrink-0" />
-              )}
               <span className="text-2xl">{milestone.emoji}</span>
               <h3 className="text-lg font-semibold">
                 {milestone.milestone}. {milestone.title}
               </h3>
-              {progress.isComplete && (
+              {currentProgress === 100 && (
                 <Badge variant="default" className="ml-2">
                   Completado
                 </Badge>
@@ -67,33 +48,42 @@ export function MilestoneSection({ milestone, tasks }: MilestoneSectionProps) {
             </div>
             <p className="text-sm text-muted-foreground ml-7">{milestone.dateRange}</p>
             <p className="text-xs text-muted-foreground ml-7">{milestone.dayRange}</p>
+            
+            {/* Manual Progress Slider */}
+            <div className="mt-4 ml-7 space-y-2">
+              <div className="flex items-center justify-between gap-4">
+                <label className="text-sm font-medium text-muted-foreground">
+                  Progreso del hito:
+                </label>
+                <span className="text-sm font-semibold text-primary min-w-[3rem] text-right">
+                  {currentProgress}%
+                </span>
+              </div>
+              <Slider
+                value={[currentProgress]}
+                onValueChange={handleProgressChange}
+                max={100}
+                step={5}
+                className="w-full max-w-md"
+                disabled={updateMilestoneProgressMutation.isPending}
+              />
+              {updateMilestoneProgressMutation.isPending && (
+                <p className="text-xs text-muted-foreground">Guardando...</p>
+              )}
+            </div>
+
             {milestoneTasks.length > 0 && (
-              <div className="flex items-center gap-2 mt-2 ml-7">
+              <div className="flex items-center gap-2 mt-3 ml-7">
                 <Badge variant="outline" className="text-xs">
-                  {progress.completedTasks}/{progress.totalTasks} tareas
+                  {milestoneTasks.length} {milestoneTasks.length === 1 ? 'tarea' : 'tareas'}
                 </Badge>
-                <div className="flex-1 bg-secondary rounded-full h-1.5 max-w-[200px]">
-                  <div
-                    className="bg-primary h-1.5 rounded-full transition-all"
-                    style={{
-                      width: `${
-                        progress.totalTasks > 0
-                          ? (progress.completedTasks / progress.totalTasks) * 100
-                          : 0
-                      }%`,
-                    }}
-                  />
-                </div>
               </div>
             )}
           </div>
           <Button
             variant="ghost"
             size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsExpanded(!isExpanded);
-            }}
+            onClick={() => setIsExpanded(!isExpanded)}
             className="shrink-0"
           >
             {isExpanded ? (

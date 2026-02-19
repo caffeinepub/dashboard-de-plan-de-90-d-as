@@ -1,99 +1,154 @@
 {
   "kind": "build_request",
-  "title": "Fix milestone checkbox interaction and ensure notes are always editable",
-  "projectName": "90-Day Flight Plan",
+  "title": "Replace milestone checkbox progress with manual slider control",
+  "projectName": "90-Day Plan Dashboard",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-26",
-      "text": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+      "id": "REQ-44",
+      "text": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-complaint"
+          "msg-5"
         ],
         "quotes": [
-          "no hay manera de hacer click en los hitos, como se supone que lleva esto el progreso?"
+          "son totalmente inservibles, no funcionan",
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking on the milestone header area toggles a checkbox for that milestone",
-        "The checkbox state visually reflects whether the milestone is completed or not",
-        "The milestone's completion state updates immediately when clicked",
-        "Progress bars and percentages update automatically when milestones are marked complete"
+        "No checkboxes are displayed for milestone or task completion",
+        "TaskCard components no longer include completion toggle controls",
+        "MilestoneSection header click behavior is disabled"
       ]
     },
     {
-      "id": "REQ-27",
-      "text": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
+      "id": "REQ-45",
+      "text": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-complaint"
+          "msg-5"
         ],
         "quotes": [
-          "no esta como te lo pedi"
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
         ]
       },
       "acceptanceCriteria": [
-        "Notes textarea is visible by default on every task card",
-        "Notes textarea is immediately editable without requiring any expand/collapse action",
-        "Changes to notes are saved to the backend when the user updates them",
-        "No expand/collapse icon or button appears near the notes section"
+        "Each milestone displays a horizontal slider input",
+        "Slider range is 0-100 representing percentage completion",
+        "Current progress percentage value is displayed next to the slider",
+        "Slider is fully interactive and responsive to user input"
       ]
     },
     {
-      "id": "REQ-28",
-      "text": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
-      "target": "both",
+      "id": "REQ-46",
+      "text": "Add a progress field to the backend Milestone data model to store manually set progress percentage values (0-100)",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-user-complaint"
+          "msg-5"
         ],
         "quotes": [
-          "Checkboxes ON/OFF simples en cada hito"
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
         ]
       },
       "acceptanceCriteria": [
-        "Each task card displays a functional checkbox",
-        "Clicking the checkbox toggles the task's completed field in the backend",
-        "The checkbox visual state (checked/unchecked) accurately reflects the backend completion status",
-        "Changes persist after page refresh"
+        "Backend Milestone type includes a progress field of type Nat (0-100)",
+        "Default progress value is 0 for new milestones",
+        "Progress value persists across canister upgrades"
       ]
     },
     {
-      "id": "REQ-29",
-      "text": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+      "id": "REQ-47",
+      "text": "Implement backend method updateMilestoneProgress that accepts milestone ID and progress percentage, updates the stored value, and returns success/failure",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Method signature: updateMilestoneProgress(milestoneId: Text, progress: Nat) -> async Bool",
+        "Progress value is validated to be between 0-100",
+        "Method returns true on successful update, false otherwise",
+        "Method persists changes to stable storage"
+      ]
+    },
+    {
+      "id": "REQ-48",
+      "text": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-user-complaint"
+          "msg-5"
         ],
         "quotes": [
-          "Progreso general que se actualice automáticamente cuando marcas hitos"
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
         ]
       },
       "acceptanceCriteria": [
-        "Progress calculations count only tasks with completed=true as complete",
-        "Progress calculations count tasks with completed=false as incomplete",
-        "Progress percentages update automatically when task completion states change",
-        "Phase progress indicators show accurate completion counts and percentages",
-        "Overall progress indicator shows accurate total project completion percentage"
+        "Hook provides updateMilestoneProgress mutation function",
+        "Mutation successfully calls backend actor method",
+        "Mutation invalidates progress-related queries on success",
+        "Optimistic updates show immediate slider movement"
+      ]
+    },
+    {
+      "id": "REQ-49",
+      "text": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "mejor has que la barra de progreso tengo un slider que se pueda actualizar"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Phase progress is calculated as average of milestone progress values within that phase",
+        "Overall progress is calculated as average of all milestone progress values",
+        "Progress bars and percentages update immediately when slider values change",
+        "Calculations ignore task completion status entirely"
+      ]
+    },
+    {
+      "id": "REQ-50",
+      "text": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "son totalmente inservibles, no funcionan"
+        ]
+      },
+      "acceptanceCriteria": [
+        "useTasks hook no longer includes completeTask mutation",
+        "TaskCard component has no completion toggle logic",
+        "No click handlers remain for task or milestone completion",
+        "All checkbox-related console logging is removed"
       ]
     }
   ],
   "constraints": [
-    "Do not modify backend/main.mo actor architecture or introduce multiple actors",
-    "Do not edit immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
-    "Preserve existing task data and milestone definitions from constants/milestones.ts",
-    "Use the existing Task data model with completed field (boolean) for completion tracking"
+    "Do not change the backend single-actor architecture",
+    "Preserve the six-phase and 18-milestone structure defined in milestones.ts",
+    "Maintain Spanish language labels throughout the UI",
+    "Keep the warm earth-tones color scheme (no blue/purple)",
+    "Preserve task notes functionality and display"
   ],
   "nonGoals": [
-    "Reintroducing three-state status dropdown (En progreso, Terminado, Pausado)",
-    "Adding collapsible behavior to notes sections",
-    "Changing the 6-phase, 18-milestone structure",
-    "Modifying the February 20, 2026 start date",
-    "Adding new features beyond fixing checkboxes, clickable milestones, and open notes"
+    "Automatic progress calculation based on task completion",
+    "Checkbox-based completion tracking",
+    "Task-level completion status management",
+    "Milestone click-to-complete functionality"
   ],
   "imageRequirements": {
     "required": [],

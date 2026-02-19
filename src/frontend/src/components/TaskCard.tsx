@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Edit2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { TaskDialog } from '@/components/TaskDialog';
 import { useTasks } from '@/hooks/useTasks';
@@ -17,14 +16,7 @@ interface TaskCardProps {
 export function TaskCard({ task, phaseNumber }: TaskCardProps) {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [notesValue, setNotesValue] = useState(task.notes || '');
-  const { completeTaskMutation, addTaskNotesMutation } = useTasks();
-
-  const handleCheckboxChange = (checked: boolean) => {
-    completeTaskMutation.mutate({
-      taskId: task.id,
-      completed: checked,
-    });
-  };
+  const { addTaskNotesMutation } = useTasks();
 
   const handleNotesBlur = () => {
     if (notesValue !== task.notes) {
@@ -36,21 +28,16 @@ export function TaskCard({ task, phaseNumber }: TaskCardProps) {
   };
 
   const dayNumber = calculateDayNumber(task.dueTime);
-  const isCompleted = task.completed;
 
   return (
     <>
-      <Card className={isCompleted ? 'opacity-60' : ''}>
+      <Card>
         <CardContent className="p-4">
           <div className="flex items-start gap-3">
             <div className="flex-1 min-w-0 space-y-3">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <p
-                    className={`text-sm font-medium ${
-                      isCompleted ? 'line-through text-muted-foreground' : ''
-                    }`}
-                  >
+                  <p className="text-sm font-medium">
                     {task.description}
                   </p>
                   <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
@@ -60,34 +47,15 @@ export function TaskCard({ task, phaseNumber }: TaskCardProps) {
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
-                  {!isCompleted && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsEditDialogOpen(true)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Edit2 className="h-4 w-4" />
-                    </Button>
-                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsEditDialogOpen(true)}
+                    className="h-8 w-8 p-0"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </Button>
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id={`task-${task.id}`}
-                  checked={isCompleted}
-                  onCheckedChange={handleCheckboxChange}
-                  disabled={completeTaskMutation.isPending}
-                />
-                <label
-                  htmlFor={`task-${task.id}`}
-                  className={`text-sm font-medium cursor-pointer ${
-                    isCompleted ? 'text-green-600' : 'text-muted-foreground'
-                  }`}
-                >
-                  {isCompleted ? 'Completada' : 'Marcar como completada'}
-                </label>
               </div>
 
               <div className="space-y-2 pt-2 border-t">

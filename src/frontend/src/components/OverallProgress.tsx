@@ -1,35 +1,26 @@
-import { Task } from '../backend';
-import { getOverallProgress } from '@/utils/progressUtils';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle2 } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { useTasks } from '@/hooks/useTasks';
+import { getOverallProgress } from '@/utils/progressUtils';
 
-interface OverallProgressProps {
-  tasks: Task[];
-}
-
-export function OverallProgress({ tasks }: OverallProgressProps) {
-  const progress = getOverallProgress(tasks);
+export function OverallProgress() {
+  const { milestones } = useTasks();
+  const progress = getOverallProgress(milestones);
 
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-            <CheckCircle2 className="h-6 w-6 text-primary" />
+    <Card>
+      <CardContent className="pt-6">
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-muted-foreground">Progreso General</h3>
+            <span className="text-2xl font-bold text-primary">{progress.percentage}%</span>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold">Progreso General</h3>
-            <p className="text-sm text-muted-foreground">
-              {progress.completedMilestones} de {progress.totalMilestones} hitos completados
-            </p>
-          </div>
+          <Progress value={progress.percentage} className="h-3" />
+          <p className="text-xs text-muted-foreground text-center">
+            {progress.completedMilestones} de {progress.totalMilestones} hitos completados
+          </p>
         </div>
-        <div className="text-right">
-          <div className="text-3xl font-bold text-primary">{progress.percentage}%</div>
-          <p className="text-xs text-muted-foreground">Completado</p>
-        </div>
-      </div>
-      <Progress value={progress.percentage} className="h-3" />
-    </div>
+      </CardContent>
+    </Card>
   );
 }

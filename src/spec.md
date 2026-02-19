@@ -1,12 +1,14 @@
 # Specification
 
 ## Summary
-**Goal:** Fix milestone checkbox interaction and ensure task notes are always editable.
+**Goal:** Replace checkbox-based progress tracking with manual slider controls for milestones.
 
 **Planned changes:**
-- Make milestone headers clickable to toggle completion status via checkbox
-- Display task notes as always-visible, always-editable textarea without collapsible behavior
-- Verify task checkboxes correctly toggle completion status and persist changes
-- Update progress calculations to use binary completed field (true/false) and reflect changes automatically
+- Remove all checkbox completion controls from milestone and task components
+- Add a slider control (0-100%) to each milestone card for manual progress adjustment
+- Add progress field to backend Milestone model and implement updateMilestoneProgress method
+- Create React Query mutation hook to sync slider changes with backend
+- Update progress calculations to use manually set milestone percentages instead of task completion counts
+- Remove all task completion state management and related event handlers
 
-**User-visible outcome:** Users can click milestone headers to mark them complete, see and edit task notes immediately without expanding, toggle task completion with checkboxes, and see accurate progress percentages that update automatically.
+**User-visible outcome:** Users can directly adjust milestone progress using sliders instead of marking individual tasks complete. Phase and overall progress bars update based on the manually set milestone percentages.

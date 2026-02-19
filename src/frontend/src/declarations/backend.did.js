@@ -80,6 +80,12 @@ export const AdsMetrics = IDL.Record({
   'appointments' : IDL.Nat,
   'converted' : IDL.Nat,
 });
+export const Milestone = IDL.Record({
+  'id' : IDL.Nat,
+  'name' : IDL.Text,
+  'description' : IDL.Text,
+  'progress' : IDL.Nat,
+});
 
 export const idlService = IDL.Service({
   'addAdsMetrics' : IDL.Func(
@@ -87,6 +93,7 @@ export const idlService = IDL.Service({
       [],
       [],
     ),
+  'addMilestone' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
   'addTask' : IDL.Func(
       [IDL.Text, Time, IDL.Nat, IDL.Nat, IDL.Text, TaskContent],
       [IDL.Nat],
@@ -108,10 +115,13 @@ export const idlService = IDL.Service({
       ['query'],
     ),
   'getAllAdsMetrics' : IDL.Func([], [IDL.Vec(AdsMetrics)], ['query']),
+  'getAllMilestones' : IDL.Func([], [IDL.Vec(Milestone)], ['query']),
   'getAllTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
   'getCompletedTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
+  'getMilestone' : IDL.Func([IDL.Nat], [IDL.Opt(Milestone)], ['query']),
   'getTasksByMilestone' : IDL.Func([IDL.Nat], [IDL.Vec(Task)], ['query']),
   'getTasksByPhase' : IDL.Func([IDL.Nat], [IDL.Vec(Task)], ['query']),
+  'updateMilestoneProgress' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Bool], []),
 });
 
 export const idlInitArgs = [];
@@ -189,6 +199,12 @@ export const idlFactory = ({ IDL }) => {
     'appointments' : IDL.Nat,
     'converted' : IDL.Nat,
   });
+  const Milestone = IDL.Record({
+    'id' : IDL.Nat,
+    'name' : IDL.Text,
+    'description' : IDL.Text,
+    'progress' : IDL.Nat,
+  });
   
   return IDL.Service({
     'addAdsMetrics' : IDL.Func(
@@ -196,6 +212,7 @@ export const idlFactory = ({ IDL }) => {
         [],
         [],
       ),
+    'addMilestone' : IDL.Func([IDL.Nat, IDL.Text, IDL.Text], [], []),
     'addTask' : IDL.Func(
         [IDL.Text, Time, IDL.Nat, IDL.Nat, IDL.Text, TaskContent],
         [IDL.Nat],
@@ -217,10 +234,13 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getAllAdsMetrics' : IDL.Func([], [IDL.Vec(AdsMetrics)], ['query']),
+    'getAllMilestones' : IDL.Func([], [IDL.Vec(Milestone)], ['query']),
     'getAllTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
     'getCompletedTasks' : IDL.Func([], [IDL.Vec(Task)], ['query']),
+    'getMilestone' : IDL.Func([IDL.Nat], [IDL.Opt(Milestone)], ['query']),
     'getTasksByMilestone' : IDL.Func([IDL.Nat], [IDL.Vec(Task)], ['query']),
     'getTasksByPhase' : IDL.Func([IDL.Nat], [IDL.Vec(Task)], ['query']),
+    'updateMilestoneProgress' : IDL.Func([IDL.Nat, IDL.Nat], [IDL.Bool], []),
   });
 };
 

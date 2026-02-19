@@ -2,8 +2,27 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-make-each-milestone-card-in-milestonesection-clickable-so-that-clicking-anywhere-on-the-milestone-header-not-just-the-expand-collapse-icon-toggles-the-milestone-s-completion-status-via-a-checkbox",
-      "featureTitle": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+      "featureId": "feature-remove-all-checkbox-based-progress-tracking-functionality-from-milestonesection-and-taskcard-components",
+      "featureTitle": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
+      "files": [
+        "frontend/src/components/MilestoneSection.tsx",
+        "frontend/src/components/TaskCard.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-44"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-manual-slider-control-to-each-milestone-card-that-allows-direct-adjustment-of-progress-percentage-from-0-to-100",
+      "featureTitle": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
       "files": [
         "frontend/src/components/MilestoneSection.tsx"
       ],
@@ -15,15 +34,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-26"
+        "REQ-45"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-ensure-that-each-taskcard-component-displays-its-notes-field-as-an-always-visible-always-editable-textarea-input-without-any-collapsible-expandable-behavior",
-      "featureTitle": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
+      "featureId": "feature-create-react-query-mutation-hook-in-usetasks-that-calls-the-backend-updatemilestoneprogress-method-when-slider-value-changes",
+      "featureTitle": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
       "files": [
-        "frontend/src/components/TaskCard.tsx"
+        "frontend/src/hooks/useTasks.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -33,15 +52,17 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-27"
+        "REQ-48"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-verify-that-taskcard-checkboxes-correctly-toggle-task-completion-status-between-completed-on-and-not-completed-off-states-and-that-these-changes-persist-to-the-backend",
-      "featureTitle": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
+      "featureId": "feature-update-progressutils-ts-to-calculate-phase-and-overall-progress-based-on-manually-set-milestone-progress-percentages-instead-of-task-completion-counts",
+      "featureTitle": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
       "files": [
-        "frontend/src/components/TaskCard.tsx"
+        "frontend/src/components/OverallProgress.tsx",
+        "frontend/src/components/PhaseNavigation.tsx",
+        "frontend/src/utils/progressUtils.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -51,15 +72,17 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-28"
+        "REQ-49"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-progressutils-ts-to-correctly-calculate-milestone-phase-and-overall-progress-based-on-task-completion-status-using-the-binary-completed-field-true-false",
-      "featureTitle": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+      "featureId": "feature-remove-all-completetask-mutation-calls-task-completion-state-management-and-checkbox-related-event-handlers-from-the-frontend-codebase",
+      "featureTitle": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
       "files": [
-        "frontend/src/components/MilestoneSection.tsx"
+        "frontend/src/components/MilestoneSection.tsx",
+        "frontend/src/components/TaskCard.tsx",
+        "frontend/src/hooks/useTasks.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -69,7 +92,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-29"
+        "REQ-50"
       ],
       "confidence": "high"
     }

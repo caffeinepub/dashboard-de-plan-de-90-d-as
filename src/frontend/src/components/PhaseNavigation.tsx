@@ -1,56 +1,57 @@
-import { PHASES } from '@/constants/milestones';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Task } from '../backend';
+import { Progress } from '@/components/ui/progress';
+import { PHASES } from '@/constants/milestones';
+import { useTasks } from '@/hooks/useTasks';
 import { getPhaseProgress } from '@/utils/progressUtils';
 
 interface PhaseNavigationProps {
-  selectedPhase: number;
+  currentPhase: number;
   onPhaseChange: (phase: number) => void;
-  tasks: Task[];
 }
 
-export function PhaseNavigation({ selectedPhase, onPhaseChange, tasks }: PhaseNavigationProps) {
-  return (
-    <div className="space-y-3">
-      <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
-        Fases del Proyecto
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        {PHASES.map((phase) => {
-          const progress = getPhaseProgress(phase.number, tasks);
-          const isActive = selectedPhase === phase.number;
+export function PhaseNavigation({ currentPhase, onPhaseChange }: PhaseNavigationProps) {
+  const { milestones } = useTasks();
 
-          return (
-            <Button
-              key={phase.number}
-              variant={isActive ? 'default' : 'outline'}
-              className={`h-auto p-4 flex flex-col items-start gap-2 ${
-                isActive ? 'ring-2 ring-ring ring-offset-2' : ''
-              }`}
-              onClick={() => onPhaseChange(phase.number)}
-            >
-              <div className="flex items-center justify-between w-full">
-                <span className="text-lg font-bold">Fase {phase.number}</span>
-                <Badge variant={isActive ? 'secondary' : 'outline'} className="text-xs">
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {PHASES.map((phase) => {
+        const progress = getPhaseProgress(phase.number, milestones);
+        const isActive = currentPhase === phase.number;
+
+        return (
+          <button
+            key={phase.number}
+            onClick={() => onPhaseChange(phase.number)}
+            className={`text-left p-4 rounded-lg border-2 transition-all ${
+              isActive
+                ? 'border-primary bg-primary/5 shadow-md'
+                : 'border-border hover:border-primary/50 hover:bg-accent'
+            }`}
+          >
+            <div className="space-y-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-sm mb-1">
+                    Fase {phase.number}: {phase.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">{phase.dateRange}</p>
+                  <p className="text-xs text-muted-foreground">{phase.dayRange}</p>
+                </div>
+                <Badge
+                  variant={progress.completedMilestones === progress.totalMilestones ? 'default' : 'outline'}
+                  className="shrink-0"
+                >
                   {progress.completedMilestones}/{progress.totalMilestones}
                 </Badge>
               </div>
-              <div className="text-left w-full">
-                <p className="text-xs font-medium line-clamp-2">{phase.title}</p>
-                <p className="text-xs text-muted-foreground mt-1">{phase.dateRange}</p>
-                <p className="text-xs text-muted-foreground">{phase.dayRange}</p>
+              <div className="space-y-1">
+                <Progress value={progress.percentage} className="h-2" />
+                <p className="text-xs text-muted-foreground text-right">{progress.percentage}%</p>
               </div>
-              <div className="w-full bg-secondary rounded-full h-1.5 mt-1">
-                <div
-                  className="bg-primary h-1.5 rounded-full transition-all"
-                  style={{ width: `${progress.percentage}%` }}
-                />
-              </div>
-            </Button>
-          );
-        })}
-      </div>
+            </div>
+          </button>
+        );
+      })}
     </div>
   );
 }

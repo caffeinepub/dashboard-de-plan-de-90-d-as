@@ -1,8 +1,17 @@
 import Map "mo:core/Map";
-import Nat "mo:core/Nat";
-import Time "mo:core/Time";
 
 module {
+  type Task = {
+    id : Nat;
+    description : Text;
+    dueTime : Int;
+    completed : Bool;
+    phase : Nat;
+    milestone : Nat;
+    notes : Text;
+    content : TaskContent;
+  };
+
   type TaskContent = {
     phase : Nat;
     milestone : Nat;
@@ -66,54 +75,28 @@ module {
     converted : Nat;
   };
 
-  type OldTask = {
-    id : Nat;
-    description : Text;
-    dueTime : Time.Time;
-    completed : Bool;
-    phase : Nat;
-    milestone : Nat;
-    notes : Text;
-    status : TaskStatus;
-    content : TaskContent;
-  };
-
-  type Task = {
-    id : Nat;
-    description : Text;
-    dueTime : Time.Time;
-    completed : Bool;
-    phase : Nat;
-    milestone : Nat;
-    notes : Text;
-    content : TaskContent;
-  };
-
-  type TaskStatus = { #enProgreso; #terminado; #pausado };
-
-  // Old actor
   type OldActor = {
-    nextTaskId : Nat;
-    tasks : Map.Map<Nat, OldTask>;
-    adsMetrics : Map.Map<Text, AdsMetrics>;
-  };
-
-  // New actor
-  type NewActor = {
-    nextTaskId : Nat;
     tasks : Map.Map<Nat, Task>;
     adsMetrics : Map.Map<Text, AdsMetrics>;
+    nextTaskId : Nat;
+  };
+
+  type Milestone = {
+    id : Nat;
+    name : Text;
+    description : Text;
+    progress : Nat;
+  };
+
+  type NewActor = {
+    tasks : Map.Map<Nat, Task>;
+    adsMetrics : Map.Map<Text, AdsMetrics>;
+    milestones : Map.Map<Nat, Milestone>;
+    nextTaskId : Nat;
   };
 
   public func run(old : OldActor) : NewActor {
-    let newTasks = old.tasks.map<Nat, OldTask, Task>(
-      func(_taskId, oldTask) {
-        {
-          oldTask with
-          status = #enProgreso // Set status to default value (will be removed)
-        };
-      }
-    );
-    { old with tasks = newTasks };
+    let milestones = Map.empty<Nat, Milestone>();
+    { old with milestones };
   };
 };

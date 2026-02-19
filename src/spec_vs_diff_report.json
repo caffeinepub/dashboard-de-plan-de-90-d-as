@@ -1,16 +1,22 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-19T00:08:28.277Z",
-  "summary": "The diff implements all four requirements with appropriate UI and backend changes. REQ-26 (clickable milestone headers), REQ-27 (always-visible/editable notes), REQ-28 (task checkbox toggle), and REQ-29 (progress calculations) are all addressed. No missing requirements or hallucinated features were identified.",
+  "generatedAt": "2026-02-19T00:45:52.107Z",
+  "summary": "All 7 requirements (REQ-44 through REQ-50) are implemented. The diff shows: backend added Milestone type with progress field (Nat), added updateMilestoneProgress and getAllMilestones methods; frontend replaced checkboxes with manual progress sliders in MilestoneSection, created updateMilestoneProgressMutation hook in useTasks, removed completeTask mutation, updated progressUtils to calculate based on milestone progress values, and removed task completion toggle logic from TaskCard.",
   "missing_requirements": [],
   "hallucinated_features": [],
   "confidence": 0.95,
   "changed_files": [
     "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
     "frontend/src/components/MilestoneSection.tsx",
+    "frontend/src/components/OverallProgress.tsx",
+    "frontend/src/components/PhaseNavigation.tsx",
     "frontend/src/components/TaskCard.tsx",
+    "frontend/src/hooks/useTasks.ts",
+    "frontend/src/pages/Dashboard.tsx",
+    "frontend/src/utils/progressUtils.ts",
     "project_state.json"
   ]
 }

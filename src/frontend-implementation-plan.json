@@ -1,89 +1,119 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix milestone checkbox interaction and ensure notes are always editable",
+  "title": "Replace milestone checkbox progress with manual slider control",
   "requirements": [
     {
-      "id": "REQ-26",
-      "summary": "Make milestone header clickable to toggle completion checkbox",
+      "id": "REQ-44",
+      "summary": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
       "acceptanceCriteria": [
-        "Clicking on the milestone header area toggles a checkbox for that milestone",
-        "The checkbox state visually reflects whether the milestone is completed or not",
-        "The milestone's completion state updates immediately when clicked",
-        "Progress bars and percentages update automatically when milestones are marked complete"
+        "No checkboxes are displayed for milestone or task completion",
+        "TaskCard components no longer include completion toggle controls",
+        "MilestoneSection header click behavior is disabled"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/MilestoneSection.tsx",
           "operation": "modify",
-          "description": "Add a clickable milestone header with an integrated checkbox that toggles milestone completion status. The entire header area (not just the expand/collapse icon) should be clickable. Add visual feedback showing completion state (e.g., checkmark icon, styling changes). Wire the checkbox state to track whether all tasks in the milestone are completed, and trigger progress recalculation when toggled. Ensure the expand/collapse functionality remains separate from the completion toggle."
-        }
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "summary": "Display task notes as always-visible, always-editable textarea",
-      "acceptanceCriteria": [
-        "Notes textarea is visible by default on every task card",
-        "Notes textarea is immediately editable without requiring any expand/collapse action",
-        "Changes to notes are saved to the backend when the user updates them",
-        "No expand/collapse icon or button appears near the notes section"
-      ],
-      "file_operations": [
+          "description": "Remove the clickable header behavior that toggles completion of all tasks within the milestone. Remove all console logging related to toggle interactions. Keep the expandable card structure but disable the completion toggle functionality."
+        },
         {
           "path": "frontend/src/components/TaskCard.tsx",
           "operation": "modify",
-          "description": "Remove any collapsible/expandable behavior from the notes section. Display the notes textarea as always visible and always editable directly on the TaskCard. Wire the textarea onChange handler to call the addTaskNotes method from useTasks hook to persist changes to the backend. Remove any expand/collapse icons or buttons associated with the notes field. Ensure the textarea has appropriate styling and placeholder text."
+          "description": "Remove the checkbox input control for task completion. Remove all event handlers related to task completion toggling. Remove completion state management logic. Keep the task display structure, edit button, notes textarea, and due date information intact."
+        },
+        {
+          "path": "frontend/src/components/ProgressIndicator.tsx",
+          "operation": "modify",
+          "description": "Remove or simplify the component since task-level completion status is no longer tracked. This component may be repurposed or removed entirely depending on whether any visual indicators are still needed."
         }
       ]
     },
     {
-      "id": "REQ-28",
-      "summary": "Verify task checkbox correctly toggles completion status with backend persistence",
+      "id": "REQ-45",
+      "summary": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
       "acceptanceCriteria": [
-        "Each task card displays a functional checkbox",
-        "Clicking the checkbox toggles the task's completed field in the backend",
-        "The checkbox visual state (checked/unchecked) accurately reflects the backend completion status",
-        "Changes persist after page refresh"
+        "Each milestone displays a horizontal slider input",
+        "Slider range is 0-100 representing percentage completion",
+        "Current progress percentage value is displayed next to the slider",
+        "Slider is fully interactive and responsive to user input"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/TaskCard.tsx",
+          "path": "frontend/src/components/MilestoneSection.tsx",
           "operation": "modify",
-          "description": "Verify that the existing checkbox on TaskCard correctly calls the completeTask method from useTasks hook with the task ID and toggled boolean value (true for completed, false for not completed). Ensure the checkbox checked state is bound to task.completed field. Confirm that changes trigger a React Query cache invalidation to reflect updated state immediately. Add visual styling to distinguish completed vs. incomplete tasks (e.g., strikethrough text, opacity changes)."
+          "description": "Add a horizontal slider input control to the milestone card header or body. The slider should have a range of 0-100 representing percentage completion. Display the current progress percentage value next to the slider (e.g., '45%'). Connect the slider to the updateMilestoneProgress mutation from useTasks hook. Ensure the slider is styled consistently with the warm earth-tones color scheme and is fully interactive."
         }
       ]
     },
     {
-      "id": "REQ-29",
-      "summary": "Update progress calculations to use binary completed field",
+      "id": "REQ-48",
+      "summary": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
       "acceptanceCriteria": [
-        "Progress calculations count only tasks with completed=true as complete",
-        "Progress calculations count tasks with completed=false as incomplete",
-        "Progress percentages update automatically when task completion states change",
-        "Phase progress indicators show accurate completion counts and percentages",
-        "Overall progress indicator shows accurate total project completion percentage"
+        "Hook provides updateMilestoneProgress mutation function",
+        "Mutation successfully calls backend actor method",
+        "Mutation invalidates progress-related queries on success",
+        "Optimistic updates show immediate slider movement"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTasks.ts",
+          "operation": "modify",
+          "description": "Add a new React Query mutation called updateMilestoneProgress that accepts milestoneId (bigint) and progress (bigint) parameters. The mutation should call actor.updateMilestoneProgress(milestoneId, progress). On success, invalidate queries related to milestones and progress calculations to trigger refetch. Implement optimistic updates to show immediate slider movement before backend confirmation. Return the mutation function for use in components."
+        }
+      ]
+    },
+    {
+      "id": "REQ-49",
+      "summary": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
+      "acceptanceCriteria": [
+        "Phase progress is calculated as average of milestone progress values within that phase",
+        "Overall progress is calculated as average of all milestone progress values",
+        "Progress bars and percentages update immediately when slider values change",
+        "Calculations ignore task completion status entirely"
       ],
       "file_operations": [
         {
           "path": "frontend/src/utils/progressUtils.ts",
           "operation": "modify",
-          "description": "Update all progress calculation functions (calculateMilestoneProgress, calculatePhaseProgress, calculateOverallProgress) to use the binary task.completed field (boolean true/false) instead of any status string fields. Count tasks where completed === true as complete, and tasks where completed === false as incomplete. Ensure calculations return accurate completion counts and percentages for milestones, phases, and overall project. Verify that progress calculations automatically reflect changes when task completion states are updated."
+          "description": "Rewrite all progress calculation functions to use the manually set milestone.progress field instead of counting completed tasks. Calculate phase progress as the average of milestone progress percentages for milestones within that phase. Calculate overall progress as the average of all milestone progress percentages. Remove all logic that references task completion status. Ensure functions accept milestone data with progress fields and return percentage values."
         },
         {
           "path": "frontend/src/components/OverallProgress.tsx",
           "operation": "modify",
-          "description": "Verify that OverallProgress component correctly displays progress data from progressUtils calculations. Ensure the component re-renders automatically when task completion states change and progress calculations update. Confirm that the progress bar, percentage, and milestone counts accurately reflect the binary completed field."
+          "description": "Update to use the new progress calculation functions from progressUtils that work with milestone progress percentages. Ensure the progress bar and percentage display reflect the manually set values and update immediately when slider values change."
         },
         {
           "path": "frontend/src/components/PhaseNavigation.tsx",
           "operation": "modify",
-          "description": "Verify that PhaseNavigation component correctly displays phase-level progress using progressUtils calculations. Ensure progress bars and milestone completion counts update automatically when tasks are marked complete or incomplete. Confirm that the displayed progress accurately reflects the binary completed field."
+          "description": "Update phase progress indicators to use the new calculation functions from progressUtils that work with milestone progress percentages instead of task completion counts. Ensure progress badges update immediately when milestone slider values change."
+        }
+      ]
+    },
+    {
+      "id": "REQ-50",
+      "summary": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+      "acceptanceCriteria": [
+        "useTasks hook no longer includes completeTask mutation",
+        "TaskCard component has no completion toggle logic",
+        "No click handlers remain for task or milestone completion",
+        "All checkbox-related console logging is removed"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useTasks.ts",
+          "operation": "modify",
+          "description": "Remove the completeTask mutation entirely from the useTasks hook. Remove all related query invalidation logic that was triggered by task completion. Remove all console logging statements related to task completion. Keep all other task management mutations (add, edit, notes) intact."
+        },
+        {
+          "path": "frontend/src/components/TaskCard.tsx",
+          "operation": "modify",
+          "description": "Remove all completion toggle logic, click handlers, and state management related to task completion. Remove any console logging related to checkbox interactions. Keep the task display structure, edit functionality, notes management, and due date display fully functional."
         },
         {
           "path": "frontend/src/components/MilestoneSection.tsx",
           "operation": "modify",
-          "description": "Verify that MilestoneSection displays milestone-level progress using progressUtils calculations. Ensure the task progress indicators (e.g., '3/5 tasks completed') update automatically when task completion states change. Confirm that the progress bar accurately reflects completion based on the binary completed field."
+          "description": "Remove all click handlers for milestone completion toggling. Remove all console logging statements related to toggle interactions. Ensure the component no longer attempts to mark all tasks within a milestone as complete/incomplete."
         }
       ]
     }

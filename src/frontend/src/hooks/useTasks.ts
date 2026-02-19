@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useActor } from './useActor';
-import { Task, TaskContent, Time } from '../backend';
+import { Task, TaskContent, Time, Milestone } from '../backend';
 
 export function useTasks() {
   const { actor, isFetching } = useActor();
@@ -12,8 +12,29 @@ export function useTasks() {
       if (!actor) return [];
       return actor.getAllTasks();
     },
-    enabled: !!actor && !isFetching,
+    enabled: !!actor,
+    staleTime: 30000,
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
+
+  const milestonesQuery = useQuery<Milestone[]>({
+    queryKey: ['milestones'],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.getAllMilestones();
+    },
+    enabled: !!actor,
+    staleTime: 30000,
+  });
+
+  // Create a map of milestone ID to progress percentage
+  const milestoneProgress = new Map<number, number>();
+  if (milestonesQuery.data) {
+    milestonesQuery.data.forEach((m) => {
+      milestoneProgress.set(Number(m.id), Number(m.progress));
+    });
+  }
 
   const addTaskMutation = useMutation({
     mutationFn: async ({
@@ -63,16 +84,6 @@ export function useTasks() {
     },
   });
 
-  const completeTaskMutation = useMutation({
-    mutationFn: async ({ taskId, completed }: { taskId: bigint; completed: boolean }) => {
-      if (!actor) throw new Error('Actor no disponible');
-      return actor.completeTask(taskId, completed);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['tasks'] });
-    },
-  });
-
   const addTaskNotesMutation = useMutation({
     mutationFn: async ({ taskId, notes }: { taskId: bigint; notes: string }) => {
       if (!actor) throw new Error('Actor no disponible');
@@ -83,12 +94,27 @@ export function useTasks() {
     },
   });
 
+  const updateMilestoneProgressMutation = useMutation({
+    mutationFn: async ({ milestoneId, progress }: { milestoneId: bigint; progress: bigint }) => {
+      if (!actor) throw new Error('Actor no disponible');
+      return actor.updateMilestoneProgress(milestoneId, progress);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['milestones'] });
+    },
+  });
+
   return {
     tasks: tasksQuery.data || [],
-    isLoading: tasksQuery.isLoading,
+    milestones: milestonesQuery.data || [],
+    milestoneProgress,
+    isLoading: tasksQuery.isLoading || isFetching,
+    isError: tasksQuery.isError,
+    error: tasksQuery.error,
+    refetch: tasksQuery.refetch,
     addTaskMutation,
     editTaskMutation,
-    completeTaskMutation,
     addTaskNotesMutation,
+    updateMilestoneProgressMutation,
   };
 }

@@ -1,12 +1,13 @@
-import Time "mo:core/Time";
-import Map "mo:core/Map";
-import Nat "mo:core/Nat";
-import Array "mo:core/Array";
-import Iter "mo:core/Iter";
-import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
+import Array "mo:core/Array";
+import Map "mo:core/Map";
+import Iter "mo:core/Iter";
+import Nat "mo:core/Nat";
+import Time "mo:core/Time";
+import Order "mo:core/Order";
+import Migration "migration";
 
-
+(with migration = Migration.run)
 actor {
   type Task = {
     id : Nat;
@@ -88,9 +89,17 @@ actor {
     converted : Nat;
   };
 
+  type Milestone = {
+    id : Nat;
+    name : Text;
+    description : Text;
+    progress : Nat;
+  };
+
   var nextTaskId = 0;
   let tasks = Map.empty<Nat, Task>();
   let adsMetrics = Map.empty<Text, AdsMetrics>();
+  let milestones = Map.empty<Nat, Milestone>();
 
   public shared ({ caller }) func addTask(
     description : Text,
@@ -163,7 +172,8 @@ actor {
   };
 
   public query ({ caller }) func getAllTasks() : async [Task] {
-    tasks.values().toArray().sort();
+    let taskArray = tasks.values().toArray();
+    taskArray.sort();
   };
 
   public query ({ caller }) func getTasksByPhase(phase : Nat) : async [Task] {
@@ -234,5 +244,47 @@ actor {
   public query ({ caller }) func getAllAdsMetrics() : async [AdsMetrics] {
     adsMetrics.values().toArray();
   };
-};
 
+  public shared ({ caller }) func addMilestone(
+    id : Nat,
+    name : Text,
+    description : Text,
+  ) : async () {
+    let milestone : Milestone = {
+      id;
+      name;
+      description;
+      progress = 0;
+    };
+    milestones.add(id, milestone);
+  };
+
+  public shared ({ caller }) func updateMilestoneProgress(
+    milestoneId : Nat,
+    progress : Nat,
+  ) : async Bool {
+    if (progress > 100) {
+      Runtime.trap("Progress cannot exceed 100");
+    };
+
+    switch (milestones.get(milestoneId)) {
+      case (?milestone) {
+        let updatedMilestone : Milestone = {
+          milestone with
+          progress
+        };
+        milestones.add(milestoneId, updatedMilestone);
+        true;
+      };
+      case (null) { false };
+    };
+  };
+
+  public query ({ caller }) func getMilestone(milestoneId : Nat) : async ?Milestone {
+    milestones.get(milestoneId);
+  };
+
+  public query ({ caller }) func getAllMilestones() : async [Milestone] {
+    milestones.values().toArray();
+  };
+};

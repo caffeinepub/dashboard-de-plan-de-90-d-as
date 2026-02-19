@@ -1,18 +1,32 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-19T00:08:28.280Z",
+  "generatedAt": "2026-02-19T00:45:52.111Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 4,
-    "implemented": 4,
+    "total": 7,
+    "implemented": 5,
     "items": [
       {
-        "id": "REQ-26",
-        "summary": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+        "id": "REQ-44",
+        "summary": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/MilestoneSection.tsx",
+          "frontend/src/components/TaskCard.tsx",
+          "frontend/src/components/ProgressIndicator.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/MilestoneSection.tsx",
+          "frontend/src/components/TaskCard.tsx"
+        ]
+      },
+      {
+        "id": "REQ-45",
+        "summary": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/MilestoneSection.tsx"
@@ -22,38 +36,57 @@
         ]
       },
       {
-        "id": "REQ-27",
-        "summary": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
+        "id": "REQ-46",
+        "summary": "Add a progress field to the backend Milestone data model to store manually set progress percentage values (0-100)",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-47",
+        "summary": "Implement backend method updateMilestoneProgress that accepts milestone ID and progress percentage, updates the stored value, and returns success/failure",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-48",
+        "summary": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/TaskCard.tsx"
+          "frontend/src/hooks/useTasks.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/TaskCard.tsx"
+          "frontend/src/hooks/useTasks.ts"
         ]
       },
       {
-        "id": "REQ-28",
-        "summary": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/TaskCard.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/TaskCard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-29",
-        "summary": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+        "id": "REQ-49",
+        "summary": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/utils/progressUtils.ts",
           "frontend/src/components/OverallProgress.tsx",
-          "frontend/src/components/PhaseNavigation.tsx",
+          "frontend/src/components/PhaseNavigation.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/utils/progressUtils.ts",
+          "frontend/src/components/OverallProgress.tsx",
+          "frontend/src/components/PhaseNavigation.tsx"
+        ]
+      },
+      {
+        "id": "REQ-50",
+        "summary": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useTasks.ts",
+          "frontend/src/components/TaskCard.tsx",
           "frontend/src/components/MilestoneSection.tsx"
         ],
         "matchedFiles": [
+          "frontend/src/hooks/useTasks.ts",
+          "frontend/src/components/TaskCard.tsx",
           "frontend/src/components/MilestoneSection.tsx"
         ]
       }
@@ -61,12 +94,22 @@
   },
   "changedFiles": [
     "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/MilestoneSection.tsx",
+    "frontend/src/components/OverallProgress.tsx",
+    "frontend/src/components/PhaseNavigation.tsx",
     "frontend/src/components/TaskCard.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useTasks.ts",
+    "frontend/src/pages/Dashboard.tsx",
+    "frontend/src/utils/progressUtils.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

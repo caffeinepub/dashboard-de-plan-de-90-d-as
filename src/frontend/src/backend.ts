@@ -177,6 +177,12 @@ export interface TaskContent {
     phase: bigint;
 }
 export type Time = bigint;
+export interface Milestone {
+    id: bigint;
+    name: string;
+    description: string;
+    progress: bigint;
+}
 export interface AdsMetrics {
     month: string;
     leads: bigint;
@@ -186,6 +192,7 @@ export interface AdsMetrics {
 }
 export interface backendInterface {
     addAdsMetrics(month: string, spent: number, leads: bigint, appointments: bigint, converted: bigint): Promise<void>;
+    addMilestone(id: bigint, name: string, description: string): Promise<void>;
     addTask(description: string, dueTime: Time, phase: bigint, milestone: bigint, notes: string, content: TaskContent): Promise<bigint>;
     addTaskNotes(taskId: bigint, notes: string): Promise<void>;
     clearCompletedTasks(): Promise<void>;
@@ -195,12 +202,15 @@ export interface backendInterface {
     getActiveTasks(): Promise<Array<Task>>;
     getAdsMetricsByMonth(month: string): Promise<AdsMetrics | null>;
     getAllAdsMetrics(): Promise<Array<AdsMetrics>>;
+    getAllMilestones(): Promise<Array<Milestone>>;
     getAllTasks(): Promise<Array<Task>>;
     getCompletedTasks(): Promise<Array<Task>>;
+    getMilestone(milestoneId: bigint): Promise<Milestone | null>;
     getTasksByMilestone(milestone: bigint): Promise<Array<Task>>;
     getTasksByPhase(phase: bigint): Promise<Array<Task>>;
+    updateMilestoneProgress(milestoneId: bigint, progress: bigint): Promise<boolean>;
 }
-import type { AdsMetrics as _AdsMetrics, Task as _Task, TaskContent as _TaskContent, Time as _Time } from "./declarations/backend.did.d.ts";
+import type { AdsMetrics as _AdsMetrics, Milestone as _Milestone, Task as _Task, TaskContent as _TaskContent, Time as _Time } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
     async addAdsMetrics(arg0: string, arg1: number, arg2: bigint, arg3: bigint, arg4: bigint): Promise<void> {
@@ -214,6 +224,20 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.addAdsMetrics(arg0, arg1, arg2, arg3, arg4);
+            return result;
+        }
+    }
+    async addMilestone(arg0: bigint, arg1: string, arg2: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.addMilestone(arg0, arg1, arg2);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.addMilestone(arg0, arg1, arg2);
             return result;
         }
     }
@@ -343,6 +367,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getAllMilestones(): Promise<Array<Milestone>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllMilestones();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllMilestones();
+            return result;
+        }
+    }
     async getAllTasks(): Promise<Array<Task>> {
         if (this.processError) {
             try {
@@ -369,6 +407,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getCompletedTasks();
             return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getMilestone(arg0: bigint): Promise<Milestone | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getMilestone(arg0);
+                return from_candid_opt_n11(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getMilestone(arg0);
+            return from_candid_opt_n11(this._uploadFile, this._downloadFile, result);
         }
     }
     async getTasksByMilestone(arg0: bigint): Promise<Array<Task>> {
@@ -399,6 +451,20 @@ export class Backend implements backendInterface {
             return from_candid_vec_n4(this._uploadFile, this._downloadFile, result);
         }
     }
+    async updateMilestoneProgress(arg0: bigint, arg1: bigint): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateMilestoneProgress(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateMilestoneProgress(arg0, arg1);
+            return result;
+        }
+    }
 }
 function from_candid_TaskContent_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _TaskContent): TaskContent {
     return from_candid_record_n8(_uploadFile, _downloadFile, value);
@@ -407,6 +473,9 @@ function from_candid_Task_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8A
     return from_candid_record_n6(_uploadFile, _downloadFile, value);
 }
 function from_candid_opt_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_AdsMetrics]): AdsMetrics | null {
+    return value.length === 0 ? null : value[0];
+}
+function from_candid_opt_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_Milestone]): Milestone | null {
     return value.length === 0 ? null : value[0];
 }
 function from_candid_record_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {

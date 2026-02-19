@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 11,
+  "projectStateVersion": 19,
   "summary": "Dashboard en español para un plan de 90 días de creación de sistema de generación de leads para lesiones personales en Utah (web/chatbots/ads), incluyendo estrategia, branding, SEO, automatización y paid ads",
   "architectural_notes": [
     "Interfaz en español",
@@ -12,13 +12,20 @@
     "Stack técnico: Google Analytics 4, GTM, Meta Pixel, CRM (HubSpot/GoHighLevel), chatbot web/Messenger",
     "Fecha de inicio del proyecto: 20 de febrero 2026",
     "Notas internas por milestone para seguimiento del equipo",
-    "Sistema de tracking de progreso debe usar checkboxes ON/OFF simples por milestone (no dropdown de estados)"
+    "Sistema de progreso manual basado en slider ajustable por el usuario en lugar de checkboxes automáticos"
   ],
   "known_issues": [
     "Versiones 3 y 4 no implementaron correctamente checkboxes ON/OFF ni notas abiertas como se solicitó",
-    "Los hitos actualmente no son clickeables para marcar progreso"
+    "Los hitos actualmente no son clickeables para marcar progreso",
+    "Versión 5: Los checkboxes no guardan el estado completed al hacer click",
+    "Versión 5: El progreso no se actualiza automáticamente después de marcar/desmarcar checkboxes",
+    "Versión 5: La función onToggle en TaskCard no está conectada correctamente al backend",
+    "Versión 6: Los checkboxes no cargan, la interfaz queda bloqueada en estado 'Cargando tareas...' sin mostrar los hitos",
+    "Versión 7: Los checkboxes de los hitos se muestran pero no son clickeables - no responden a eventos de click",
+    "Versión 7: La funcionalidad de marcado de progreso no funciona, la app no es funcional",
+    "Versión 8: Los checkboxes de los hitos siguen sin funcionar correctamente, sistema de tracking totalmente inservible"
   ],
-  "isFixRequest": true,
+  "isFixRequest": false,
   "existing_features": [
     {
       "id": "feature-create-a-main-dashboard-interface-in-spanish-that-displays-a-90-day-plan-for-system-creation-showing-three-main-tracks-web-development-chatbots-and-ads",
@@ -195,6 +202,134 @@
         "REQ-29"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-connect-the-taskcard-checkbox-ontoggle-function-to-the-backend-completetask-mutation-so-that-clicking-a-checkbox-immediately-persists-the-completed-state-true-false-to-the-backend",
+      "title": "Connect the TaskCard checkbox onToggle function to the backend completeTask mutation so that clicking a checkbox immediately persists the completed state (true/false) to the backend",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-task-loading-query-in-usetasks-hook-that-causes-the-ui-to-remain-stuck-in-cargando-tareas-state-without-displaying-milestones",
+      "title": "Debug and fix the task loading query in useTasks hook that causes the UI to remain stuck in 'Cargando tareas...' state without displaying milestones",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-useactor-hook-correctly-initializes-the-backend-actor-instance-and-handles-authentication-state-before-tasks-are-queried",
+      "title": "Verify that the useActor hook correctly initializes the backend actor instance and handles authentication state before tasks are queried",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-error-handling-and-logging-to-the-getalltasks-query-in-usetasks-hook-to-identify-the-root-cause-of-the-loading-failure",
+      "title": "Add error handling and logging to the getAllTasks query in useTasks hook to identify the root cause of the loading failure",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-dashboard-component-properly-handles-the-loading-error-and-success-states-from-the-tasks-query-without-blocking-milestone-rendering",
+      "title": "Ensure the Dashboard component properly handles the loading, error, and success states from the tasks query without blocking milestone rendering",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-debug-and-fix-the-taskcard-checkbox-click-handler-to-ensure-it-correctly-calls-the-ontoggle-function-when-clicked-making-the-checkbox-interactive-and-responsive-to-user-clicks",
+      "title": "Debug and fix the TaskCard checkbox click handler to ensure it correctly calls the onToggle function when clicked, making the checkbox interactive and responsive to user clicks",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-the-completetask-mutation-in-usetasks-hook-is-correctly-wired-to-the-backend-actor-s-completetask-method-and-successfully-persists-the-completed-state-change",
+      "title": "Verify that the completeTask mutation in useTasks hook is correctly wired to the backend actor's completeTask method and successfully persists the completed state change",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-comprehensive-console-logging-to-the-taskcard-ontoggle-function-usetasks-completetask-mutation-and-backend-completetask-method-to-trace-the-full-execution-path-and-identify-where-the-interaction-chain-breaks",
+      "title": "Add comprehensive console logging to the TaskCard onToggle function, useTasks completeTask mutation, and backend completeTask method to trace the full execution path and identify where the interaction chain breaks",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-taskcard-component-correctly-receives-and-passes-the-task-id-to-the-ontoggle-callback-function-so-that-the-completetask-mutation-can-identify-which-task-to-update",
+      "title": "Ensure the TaskCard component correctly receives and passes the task ID to the onToggle callback function so that the completeTask mutation can identify which task to update",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-react-query-cache-invalidation-triggers-correctly-after-a-successful-completetask-mutation-so-that-the-ui-automatically-re-fetches-tasks-and-updates-progress-indicators",
+      "title": "Verify that React Query cache invalidation triggers correctly after a successful completeTask mutation so that the UI automatically re-fetches tasks and updates progress indicators",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-test-the-complete-checkbox-interaction-flow-end-to-end-click-event-ontoggle-mutation-backend-update-cache-invalidation-ui-refresh-and-fix-any-breaking-point-in-this-chain",
+      "title": "Test the complete checkbox interaction flow end-to-end: click event → onToggle → mutation → backend update → cache invalidation → UI refresh, and fix any breaking point in this chain",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-all-checkbox-based-progress-tracking-functionality-from-milestonesection-and-taskcard-components",
+      "title": "Remove all checkbox-based progress tracking functionality from MilestoneSection and TaskCard components",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-manual-slider-control-to-each-milestone-card-that-allows-direct-adjustment-of-progress-percentage-from-0-to-100",
+      "title": "Add a manual slider control to each milestone card that allows direct adjustment of progress percentage from 0% to 100%",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-react-query-mutation-hook-in-usetasks-that-calls-the-backend-updatemilestoneprogress-method-when-slider-value-changes",
+      "title": "Create React Query mutation hook in useTasks that calls the backend updateMilestoneProgress method when slider value changes",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-progressutils-ts-to-calculate-phase-and-overall-progress-based-on-manually-set-milestone-progress-percentages-instead-of-task-completion-counts",
+      "title": "Update progressUtils.ts to calculate phase and overall progress based on manually set milestone progress percentages instead of task completion counts",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-all-completetask-mutation-calls-task-completion-state-management-and-checkbox-related-event-handlers-from-the-frontend-codebase",
+      "title": "Remove all completeTask mutation calls, task completion state management, and checkbox-related event handlers from the frontend codebase",
+      "reqIds": [
+        "REQ-50"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -313,12 +448,6 @@
       "status": "pending"
     },
     {
-      "id": "AR-28",
-      "summary": "Replace the status dropdown selector with functional ON/OFF checkboxes for each milestone to enable simple binary progress tracking",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
       "id": "AR-29",
       "summary": "Change the notes section from read-only/collapsed to always open and editable by default for each milestone",
       "reqIds": [],
@@ -329,6 +458,36 @@
       "summary": "Update the backend Task status model to support binary completion tracking compatible with checkbox interface (completed vs not completed)",
       "reqIds": [
         "REQ-23"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-40",
+      "summary": "Verify that the backend getAllTasks function in main.mo correctly returns task data in the expected format without causing query failures",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-41",
+      "summary": "Replace milestone checkbox progress tracking with manual slider control that allows direct progress percentage adjustment",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-44",
+      "summary": "Add a progress field to the backend Milestone data model to store manually set progress percentage values (0-100)",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-45",
+      "summary": "Implement backend method updateMilestoneProgress that accepts milestone ID and progress percentage, updates the stored value, and returns success/failure",
+      "reqIds": [
+        "REQ-47"
       ],
       "status": "pending"
     }

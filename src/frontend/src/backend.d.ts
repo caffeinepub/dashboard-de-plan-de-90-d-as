@@ -95,6 +95,12 @@ export interface TaskContent {
     phase: bigint;
 }
 export type Time = bigint;
+export interface Milestone {
+    id: bigint;
+    name: string;
+    description: string;
+    progress: bigint;
+}
 export interface AdsMetrics {
     month: string;
     leads: bigint;
@@ -104,6 +110,7 @@ export interface AdsMetrics {
 }
 export interface backendInterface {
     addAdsMetrics(month: string, spent: number, leads: bigint, appointments: bigint, converted: bigint): Promise<void>;
+    addMilestone(id: bigint, name: string, description: string): Promise<void>;
     addTask(description: string, dueTime: Time, phase: bigint, milestone: bigint, notes: string, content: TaskContent): Promise<bigint>;
     addTaskNotes(taskId: bigint, notes: string): Promise<void>;
     clearCompletedTasks(): Promise<void>;
@@ -113,8 +120,11 @@ export interface backendInterface {
     getActiveTasks(): Promise<Array<Task>>;
     getAdsMetricsByMonth(month: string): Promise<AdsMetrics | null>;
     getAllAdsMetrics(): Promise<Array<AdsMetrics>>;
+    getAllMilestones(): Promise<Array<Milestone>>;
     getAllTasks(): Promise<Array<Task>>;
     getCompletedTasks(): Promise<Array<Task>>;
+    getMilestone(milestoneId: bigint): Promise<Milestone | null>;
     getTasksByMilestone(milestone: bigint): Promise<Array<Task>>;
     getTasksByPhase(phase: bigint): Promise<Array<Task>>;
+    updateMilestoneProgress(milestoneId: bigint, progress: bigint): Promise<boolean>;
 }

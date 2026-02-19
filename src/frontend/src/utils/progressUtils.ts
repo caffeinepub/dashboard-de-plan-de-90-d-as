@@ -1,4 +1,4 @@
-import { Task } from '../backend';
+import { Milestone } from '../backend';
 import { MILESTONES } from '@/constants/milestones';
 
 export interface PhaseProgress {
@@ -8,62 +8,77 @@ export interface PhaseProgress {
   percentage: number;
 }
 
-export interface MilestoneProgress {
-  milestone: number;
-  totalTasks: number;
-  completedTasks: number;
-  isComplete: boolean;
-}
-
-// Calculate if a milestone is complete (all tasks have completed === true)
-export function isMilestoneComplete(milestone: number, tasks: Task[]): boolean {
-  const milestoneTasks = tasks.filter((t) => Number(t.milestone) === milestone);
-  if (milestoneTasks.length === 0) return false;
-  return milestoneTasks.every((t) => t.completed === true);
-}
-
-// Calculate milestone progress
-export function getMilestoneProgress(milestone: number, tasks: Task[]): MilestoneProgress {
-  const milestoneTasks = tasks.filter((t) => Number(t.milestone) === milestone);
-  const completedTasks = milestoneTasks.filter((t) => t.completed === true).length;
-  
-  return {
-    milestone,
-    totalTasks: milestoneTasks.length,
-    completedTasks,
-    isComplete: milestoneTasks.length > 0 && completedTasks === milestoneTasks.length,
-  };
-}
-
-// Calculate phase progress
-export function getPhaseProgress(phase: number, tasks: Task[]): PhaseProgress {
+// Calculate phase progress based on milestone progress percentages
+export function getPhaseProgress(phase: number, milestones: Milestone[]): PhaseProgress {
   const phaseMilestones = MILESTONES.filter((m) => m.phase === phase);
-  const completedMilestones = phaseMilestones.filter((m) =>
-    isMilestoneComplete(m.milestone, tasks)
-  ).length;
+  const totalMilestones = phaseMilestones.length;
+  
+  if (totalMilestones === 0) {
+    return {
+      phase,
+      totalMilestones: 0,
+      completedMilestones: 0,
+      percentage: 0,
+    };
+  }
+
+  // Calculate average progress of all milestones in this phase
+  let totalProgress = 0;
+  let completedCount = 0;
+  
+  phaseMilestones.forEach((pm) => {
+    const milestone = milestones.find((m) => Number(m.id) === pm.milestone);
+    const progress = milestone ? Number(milestone.progress) : 0;
+    totalProgress += progress;
+    if (progress === 100) {
+      completedCount++;
+    }
+  });
+
+  const averageProgress = Math.round(totalProgress / totalMilestones);
 
   return {
     phase,
-    totalMilestones: phaseMilestones.length,
-    completedMilestones,
-    percentage: phaseMilestones.length > 0 
-      ? Math.round((completedMilestones / phaseMilestones.length) * 100)
-      : 0,
+    totalMilestones,
+    completedMilestones: completedCount,
+    percentage: averageProgress,
   };
 }
 
-// Calculate overall progress
-export function getOverallProgress(tasks: Task[]) {
+// Calculate overall progress based on all milestone progress percentages
+export function getOverallProgress(milestones: Milestone[]): {
+  completedMilestones: number;
+  totalMilestones: number;
+  percentage: number;
+} {
   const totalMilestones = MILESTONES.length;
-  const completedMilestones = MILESTONES.filter((m) =>
-    isMilestoneComplete(m.milestone, tasks)
-  ).length;
+  
+  if (totalMilestones === 0) {
+    return {
+      completedMilestones: 0,
+      totalMilestones: 0,
+      percentage: 0,
+    };
+  }
+
+  // Calculate average progress of all milestones
+  let totalProgress = 0;
+  let completedCount = 0;
+  
+  MILESTONES.forEach((m) => {
+    const milestone = milestones.find((bm) => Number(bm.id) === m.milestone);
+    const progress = milestone ? Number(milestone.progress) : 0;
+    totalProgress += progress;
+    if (progress === 100) {
+      completedCount++;
+    }
+  });
+
+  const averageProgress = Math.round(totalProgress / totalMilestones);
 
   return {
+    completedMilestones: completedCount,
     totalMilestones,
-    completedMilestones,
-    percentage: totalMilestones > 0 
-      ? Math.round((completedMilestones / totalMilestones) * 100)
-      : 0,
+    percentage: averageProgress,
   };
 }
