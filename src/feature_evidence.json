@@ -2,8 +2,26 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-replace-the-status-dropdown-selector-in-taskcard-component-with-a-functional-checkbox-that-toggles-between-completed-on-and-not-completed-off-states-for-each-milestone-task",
-      "featureTitle": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "featureId": "feature-make-each-milestone-card-in-milestonesection-clickable-so-that-clicking-anywhere-on-the-milestone-header-not-just-the-expand-collapse-icon-toggles-the-milestone-s-completion-status-via-a-checkbox",
+      "featureTitle": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+      "files": [
+        "frontend/src/components/MilestoneSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-26"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-that-each-taskcard-component-displays-its-notes-field-as-an-always-visible-always-editable-textarea-input-without-any-collapsible-expandable-behavior",
+      "featureTitle": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
       "files": [
         "frontend/src/components/TaskCard.tsx"
       ],
@@ -15,31 +33,13 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-22"
+        "REQ-27"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-update-progress-calculation-logic-in-progressutils-ts-to-work-with-binary-checkbox-completion-status-instead-of-three-state-dropdown-status",
-      "featureTitle": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
-      "files": [
-        "frontend/src/utils/progressUtils.ts"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-24"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-remove-the-collapsible-expandable-behavior-from-the-notes-section-in-taskcard-so-that-notes-are-always-visible-and-editable-by-default",
-      "featureTitle": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+      "featureId": "feature-verify-that-taskcard-checkboxes-correctly-toggle-task-completion-status-between-completed-on-and-not-completed-off-states-and-that-these-changes-persist-to-the-backend",
+      "featureTitle": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
       "files": [
         "frontend/src/components/TaskCard.tsx"
       ],
@@ -51,7 +51,25 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-25"
+        "REQ-28"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-progressutils-ts-to-correctly-calculate-milestone-phase-and-overall-progress-based-on-task-completion-status-using-the-binary-completed-field-true-false",
+      "featureTitle": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+      "files": [
+        "frontend/src/components/MilestoneSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-29"
       ],
       "confidence": "high"
     }

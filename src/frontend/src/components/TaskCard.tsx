@@ -26,7 +26,7 @@ export function TaskCard({ task, phaseNumber }: TaskCardProps) {
     });
   };
 
-  const handleSaveNotes = () => {
+  const handleNotesBlur = () => {
     if (notesValue !== task.notes) {
       addTaskNotesMutation.mutate({
         taskId: task.id,
@@ -97,16 +97,14 @@ export function TaskCard({ task, phaseNumber }: TaskCardProps) {
                 <Textarea
                   value={notesValue}
                   onChange={(e) => setNotesValue(e.target.value)}
+                  onBlur={handleNotesBlur}
                   placeholder="Agregar notas internas..."
                   className="min-h-[80px] text-sm"
+                  disabled={addTaskNotesMutation.isPending}
                 />
-                <Button
-                  size="sm"
-                  onClick={handleSaveNotes}
-                  disabled={addTaskNotesMutation.isPending || notesValue === task.notes}
-                >
-                  {addTaskNotesMutation.isPending ? 'Guardando...' : 'Guardar notas'}
-                </Button>
+                {addTaskNotesMutation.isPending && (
+                  <p className="text-xs text-muted-foreground">Guardando...</p>
+                )}
               </div>
             </div>
           </div>

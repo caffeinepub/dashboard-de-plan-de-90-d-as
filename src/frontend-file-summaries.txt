@@ -4,7 +4,7 @@
   "frontend/src/components/Layout.tsx": "Layout wrapper using TanStack Router's Outlet, Link, and useRouterState; displays header with navigation tabs, main content area, and footer with caffeine.ai attribution.",
   "frontend/src/components/TimelineHeader.tsx": "Visual timeline component displaying the 90-day period divided into three 30-day segments with Spanish labels.",
   "frontend/src/components/TrackSection.tsx": "Reusable track section component that displays tasks for a specific category (web/chatbots/ads) with progress bar and completion statistics.",
-  "frontend/src/components/TaskCard.tsx": "Task card component with checkbox for completion status (ON/OFF), always-visible notes section with textarea for editing, and edit button; updates task completion and notes via backend mutations.",
+  "frontend/src/components/TaskCard.tsx": "Task card component with checkbox for completion status, always-visible notes textarea that auto-saves on blur, and edit button; updates task completion and notes via backend mutations.",
   "frontend/src/components/ProgressIndicator.tsx": "Badge component displaying task status (Completado or Pendiente) with appropriate icons and styling.",
   "frontend/src/components/TaskDialog.tsx": "Modal dialog wrapper for the task form, supporting both create and edit modes with Spanish titles.",
   "frontend/src/components/TaskForm.tsx": "Task creation and editing form with phase selector, cascading milestone selector, description, and due date fields; validates phase and milestone selection and creates tasks with default uncompleted status.",
@@ -17,7 +17,7 @@
   "frontend/src/utils/progressUtils.ts": "Progress calculation utilities that check task.completed boolean for completion status; calculates milestone, phase, and overall progress percentages based on binary completion tracking.",
   "frontend/src/components/PhaseNavigation.tsx": "Phase navigation component displaying 6 clickable phase tabs with real date ranges (starting Feb 20, 2026), day ranges, completion badges, and progress bars.",
   "frontend/src/components/OverallProgress.tsx": "Dashboard-wide progress indicator showing total completed milestones (out of 18) with percentage and visual progress bar.",
-  "frontend/src/components/MilestoneSection.tsx": "Expandable milestone card displaying real date ranges alongside day ranges, task progress based on 'terminado' status, and associated tasks with status tracking.",
+  "frontend/src/components/MilestoneSection.tsx": "Expandable milestone card with clickable header that toggles completion of all tasks in the milestone; displays checkbox icon, real date ranges, task progress, and associated tasks with status tracking.",
   "frontend/src/hooks/useAdsMetrics.ts": "React Query hook for ADS metrics operations; provides getAllAdsMetrics query and addAdsMetrics mutation with automatic cache invalidation.",
   "frontend/src/utils/adsCalculations.ts": "Utility functions for calculating ADS performance metrics (cost per lead, appointment rate, conversion rate, cost per conversion) with division-by-zero handling and formatting helpers.",
   "frontend/src/pages/AdsDashboard.tsx": "ADS dashboard page component (no longer wrapped in Layout) with monthly metrics input form and comprehensive data table showing raw metrics plus calculated performance indicators."

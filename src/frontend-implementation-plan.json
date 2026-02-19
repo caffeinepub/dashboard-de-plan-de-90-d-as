@@ -1,56 +1,89 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Replace status dropdowns with ON/OFF checkboxes and make notes always open",
+  "title": "Fix milestone checkbox interaction and ensure notes are always editable",
   "requirements": [
     {
-      "id": "REQ-22",
-      "summary": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "id": "REQ-26",
+      "summary": "Make milestone header clickable to toggle completion checkbox",
       "acceptanceCriteria": [
-        "Each task card displays a checkbox instead of the status dropdown",
-        "Clicking the checkbox toggles between checked (completed) and unchecked (not completed)",
-        "The checkbox visually indicates the task's completion state",
-        "Checkbox changes persist and update the backend task status"
+        "Clicking on the milestone header area toggles a checkbox for that milestone",
+        "The checkbox state visually reflects whether the milestone is completed or not",
+        "The milestone's completion state updates immediately when clicked",
+        "Progress bars and percentages update automatically when milestones are marked complete"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/MilestoneSection.tsx",
+          "operation": "modify",
+          "description": "Add a clickable milestone header with an integrated checkbox that toggles milestone completion status. The entire header area (not just the expand/collapse icon) should be clickable. Add visual feedback showing completion state (e.g., checkmark icon, styling changes). Wire the checkbox state to track whether all tasks in the milestone are completed, and trigger progress recalculation when toggled. Ensure the expand/collapse functionality remains separate from the completion toggle."
+        }
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "summary": "Display task notes as always-visible, always-editable textarea",
+      "acceptanceCriteria": [
+        "Notes textarea is visible by default on every task card",
+        "Notes textarea is immediately editable without requiring any expand/collapse action",
+        "Changes to notes are saved to the backend when the user updates them",
+        "No expand/collapse icon or button appears near the notes section"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/TaskCard.tsx",
           "operation": "modify",
-          "description": "Replace the status dropdown selector with a checkbox input that toggles the task's completed state. Remove the Select component and related status dropdown UI. Add a checkbox that calls the completeTask mutation from useTasks hook when toggled, passing the task ID and the new boolean completion state. Display the checkbox prominently with appropriate styling and labels in Spanish (e.g., 'Completada'). Ensure the checkbox reflects the current task.completed boolean value from the backend."
+          "description": "Remove any collapsible/expandable behavior from the notes section. Display the notes textarea as always visible and always editable directly on the TaskCard. Wire the textarea onChange handler to call the addTaskNotes method from useTasks hook to persist changes to the backend. Remove any expand/collapse icons or buttons associated with the notes field. Ensure the textarea has appropriate styling and placeholder text."
         }
       ]
     },
     {
-      "id": "REQ-24",
-      "summary": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "id": "REQ-28",
+      "summary": "Verify task checkbox correctly toggles completion status with backend persistence",
       "acceptanceCriteria": [
-        "Progress calculations correctly count checked tasks as complete",
-        "Progress calculations correctly count unchecked tasks as incomplete",
-        "Phase and milestone progress indicators update accurately based on checkbox states",
-        "Overall project progress reflects binary completion tracking"
+        "Each task card displays a functional checkbox",
+        "Clicking the checkbox toggles the task's completed field in the backend",
+        "The checkbox visual state (checked/unchecked) accurately reflects the backend completion status",
+        "Changes persist after page refresh"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/TaskCard.tsx",
+          "operation": "modify",
+          "description": "Verify that the existing checkbox on TaskCard correctly calls the completeTask method from useTasks hook with the task ID and toggled boolean value (true for completed, false for not completed). Ensure the checkbox checked state is bound to task.completed field. Confirm that changes trigger a React Query cache invalidation to reflect updated state immediately. Add visual styling to distinguish completed vs. incomplete tasks (e.g., strikethrough text, opacity changes)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-29",
+      "summary": "Update progress calculations to use binary completed field",
+      "acceptanceCriteria": [
+        "Progress calculations count only tasks with completed=true as complete",
+        "Progress calculations count tasks with completed=false as incomplete",
+        "Progress percentages update automatically when task completion states change",
+        "Phase progress indicators show accurate completion counts and percentages",
+        "Overall progress indicator shows accurate total project completion percentage"
       ],
       "file_operations": [
         {
           "path": "frontend/src/utils/progressUtils.ts",
           "operation": "modify",
-          "description": "Update all progress calculation functions to use the task.completed boolean field directly instead of checking status string values. Modify getMilestoneProgress, getPhaseProgress, and getOverallProgress functions to count tasks where completed === true as complete and completed === false as incomplete. Remove any logic that checks for status string values like 'completed', 'in-progress', or 'pending'. Ensure percentage calculations work correctly with binary completion tracking."
-        }
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "summary": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
-      "acceptanceCriteria": [
-        "Notes section is always visible for each task without requiring expansion",
-        "Notes textarea is immediately accessible for editing",
-        "No collapse/expand toggle button or state for notes section",
-        "Users can add and edit notes without any extra clicks"
-      ],
-      "file_operations": [
+          "description": "Update all progress calculation functions (calculateMilestoneProgress, calculatePhaseProgress, calculateOverallProgress) to use the binary task.completed field (boolean true/false) instead of any status string fields. Count tasks where completed === true as complete, and tasks where completed === false as incomplete. Ensure calculations return accurate completion counts and percentages for milestones, phases, and overall project. Verify that progress calculations automatically reflect changes when task completion states are updated."
+        },
         {
-          "path": "frontend/src/components/TaskCard.tsx",
+          "path": "frontend/src/components/OverallProgress.tsx",
           "operation": "modify",
-          "description": "Remove the collapsible/expandable behavior from the notes section. Eliminate any state variables controlling notes visibility (e.g., isNotesOpen). Remove toggle buttons or icons that expand/collapse notes. Display the notes textarea and content directly in the card UI without requiring user interaction to reveal it. Keep the existing notes editing functionality (textarea with handleNotesChange and handleNotesBlur) but make it always visible. Adjust layout and spacing to accommodate the always-visible notes section while maintaining Spanish labels."
+          "description": "Verify that OverallProgress component correctly displays progress data from progressUtils calculations. Ensure the component re-renders automatically when task completion states change and progress calculations update. Confirm that the progress bar, percentage, and milestone counts accurately reflect the binary completed field."
+        },
+        {
+          "path": "frontend/src/components/PhaseNavigation.tsx",
+          "operation": "modify",
+          "description": "Verify that PhaseNavigation component correctly displays phase-level progress using progressUtils calculations. Ensure progress bars and milestone completion counts update automatically when tasks are marked complete or incomplete. Confirm that the displayed progress accurately reflects the binary completed field."
+        },
+        {
+          "path": "frontend/src/components/MilestoneSection.tsx",
+          "operation": "modify",
+          "description": "Verify that MilestoneSection displays milestone-level progress using progressUtils calculations. Ensure the task progress indicators (e.g., '3/5 tasks completed') update automatically when task completion states change. Confirm that the progress bar accurately reflects completion based on the binary completed field."
         }
       ]
     }

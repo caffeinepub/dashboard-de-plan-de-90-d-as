@@ -1,18 +1,29 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-18T23:53:00.975Z",
+  "generatedAt": "2026-02-19T00:08:28.280Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
     "total": 4,
-    "implemented": 3,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-22",
-        "summary": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+        "id": "REQ-26",
+        "summary": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/MilestoneSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/MilestoneSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-27",
+        "summary": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/TaskCard.tsx"
@@ -22,51 +33,40 @@
         ]
       },
       {
-        "id": "REQ-23",
-        "summary": "Update the backend Task status model to support binary completion tracking compatible with checkbox interface (completed vs not completed)",
-        "status": "unknown",
-        "plannedFiles": [],
-        "matchedFiles": []
-      },
-      {
-        "id": "REQ-24",
-        "summary": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+        "id": "REQ-28",
+        "summary": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/utils/progressUtils.ts"
+          "frontend/src/components/TaskCard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/utils/progressUtils.ts"
+          "frontend/src/components/TaskCard.tsx"
         ]
       },
       {
-        "id": "REQ-25",
-        "summary": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
+        "id": "REQ-29",
+        "summary": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/TaskCard.tsx"
+          "frontend/src/utils/progressUtils.ts",
+          "frontend/src/components/OverallProgress.tsx",
+          "frontend/src/components/PhaseNavigation.tsx",
+          "frontend/src/components/MilestoneSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/TaskCard.tsx"
+          "frontend/src/components/MilestoneSection.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
+    "frontend/src/components/MilestoneSection.tsx",
     "frontend/src/components/TaskCard.tsx",
-    "frontend/src/components/TaskForm.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useTasks.ts",
-    "frontend/src/utils/progressUtils.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

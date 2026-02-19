@@ -1,91 +1,99 @@
 {
   "kind": "build_request",
-  "title": "Replace status dropdowns with ON/OFF checkboxes and make notes always open",
+  "title": "Fix milestone checkbox interaction and ensure notes are always editable",
   "projectName": "90-Day Flight Plan",
   "priority": "high",
   "requirements": [
     {
-      "id": "REQ-22",
-      "text": "Replace the status dropdown selector in TaskCard component with a functional checkbox that toggles between completed (ON) and not completed (OFF) states for each milestone task",
+      "id": "REQ-26",
+      "text": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-user-complaint"
         ],
         "quotes": [
-          "no veo que tenga checkboxes, nose como funciona el sistema de tracking de progreso (es imperativo que cada hito tenga un checkbox funcional ON/OFF)"
+          "no hay manera de hacer click en los hitos, como se supone que lleva esto el progreso?"
         ]
       },
       "acceptanceCriteria": [
-        "Each task card displays a checkbox instead of the status dropdown",
-        "Clicking the checkbox toggles between checked (completed) and unchecked (not completed)",
-        "The checkbox visually indicates the task's completion state",
-        "Checkbox changes persist and update the backend task status"
+        "Clicking on the milestone header area toggles a checkbox for that milestone",
+        "The checkbox state visually reflects whether the milestone is completed or not",
+        "The milestone's completion state updates immediately when clicked",
+        "Progress bars and percentages update automatically when milestones are marked complete"
       ]
     },
     {
-      "id": "REQ-23",
-      "text": "Update the backend Task status model to support binary completion tracking compatible with checkbox interface (completed vs not completed)",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "es imperativo que cada hito tenga un checkbox funcional ON/OFF"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend accepts and stores binary completion status for tasks",
-        "Status updates from checkbox interactions are properly saved",
-        "Migration handles conversion of existing three-state status to binary completed/not-completed"
-      ]
-    },
-    {
-      "id": "REQ-24",
-      "text": "Update progress calculation logic in progressUtils.ts to work with binary checkbox completion status instead of three-state dropdown status",
+      "id": "REQ-27",
+      "text": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-user-complaint"
+        ],
+        "quotes": [
+          "no esta como te lo pedi"
         ]
       },
       "acceptanceCriteria": [
-        "Progress calculations correctly count checked tasks as complete",
-        "Progress calculations correctly count unchecked tasks as incomplete",
-        "Phase and milestone progress indicators update accurately based on checkbox states",
-        "Overall project progress reflects binary completion tracking"
+        "Notes textarea is visible by default on every task card",
+        "Notes textarea is immediately editable without requiring any expand/collapse action",
+        "Changes to notes are saved to the backend when the user updates them",
+        "No expand/collapse icon or button appears near the notes section"
       ]
     },
     {
-      "id": "REQ-25",
-      "text": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
-      "target": "frontend",
+      "id": "REQ-28",
+      "text": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-user-complaint"
         ],
         "quotes": [
-          "las notas deben ser abiertas para agregar mas, estan cerradas ahora"
+          "Checkboxes ON/OFF simples en cada hito"
         ]
       },
       "acceptanceCriteria": [
-        "Notes section is always visible for each task without requiring expansion",
-        "Notes textarea is immediately accessible for editing",
-        "No collapse/expand toggle button or state for notes section",
-        "Users can add and edit notes without any extra clicks"
+        "Each task card displays a functional checkbox",
+        "Clicking the checkbox toggles the task's completed field in the backend",
+        "The checkbox visual state (checked/unchecked) accurately reflects the backend completion status",
+        "Changes persist after page refresh"
+      ]
+    },
+    {
+      "id": "REQ-29",
+      "text": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-user-complaint"
+        ],
+        "quotes": [
+          "Progreso general que se actualice automáticamente cuando marcas hitos"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Progress calculations count only tasks with completed=true as complete",
+        "Progress calculations count tasks with completed=false as incomplete",
+        "Progress percentages update automatically when task completion states change",
+        "Phase progress indicators show accurate completion counts and percentages",
+        "Overall progress indicator shows accurate total project completion percentage"
       ]
     }
   ],
   "constraints": [
-    "Preserve existing task data during status model transition from three-state to binary",
-    "Maintain Spanish language labels throughout the interface",
-    "Keep the fixed start date of February 20, 2026 for all date calculations"
+    "Do not modify backend/main.mo actor architecture or introduce multiple actors",
+    "Do not edit immutable frontend paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
+    "Preserve existing task data and milestone definitions from constants/milestones.ts",
+    "Use the existing Task data model with completed field (boolean) for completion tracking"
   ],
   "nonGoals": [
-    "Changing the overall phase and milestone structure",
-    "Modifying the ADS dashboard functionality",
-    "Altering the six-phase navigation system"
+    "Reintroducing three-state status dropdown (En progreso, Terminado, Pausado)",
+    "Adding collapsible behavior to notes sections",
+    "Changing the 6-phase, 18-milestone structure",
+    "Modifying the February 20, 2026 start date",
+    "Adding new features beyond fixing checkboxes, clickable milestones, and open notes"
   ],
   "imageRequirements": {
     "required": [],

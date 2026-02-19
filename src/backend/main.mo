@@ -2,14 +2,11 @@ import Time "mo:core/Time";
 import Map "mo:core/Map";
 import Nat "mo:core/Nat";
 import Array "mo:core/Array";
-import List "mo:core/List";
 import Iter "mo:core/Iter";
 import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
-import Migration "migration";
 
-// Specify the data migration function in with-clause
-(with migration = Migration.run)
+
 actor {
   type Task = {
     id : Nat;
@@ -238,3 +235,4 @@ actor {
     adsMetrics.values().toArray();
   };
 };
+

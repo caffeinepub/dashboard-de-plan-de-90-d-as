@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 9,
+  "projectStateVersion": 11,
   "summary": "Dashboard en español para un plan de 90 días de creación de sistema de generación de leads para lesiones personales en Utah (web/chatbots/ads), incluyendo estrategia, branding, SEO, automatización y paid ads",
   "architectural_notes": [
     "Interfaz en español",
@@ -14,8 +14,11 @@
     "Notas internas por milestone para seguimiento del equipo",
     "Sistema de tracking de progreso debe usar checkboxes ON/OFF simples por milestone (no dropdown de estados)"
   ],
-  "known_issues": [],
-  "isFixRequest": false,
+  "known_issues": [
+    "Versiones 3 y 4 no implementaron correctamente checkboxes ON/OFF ni notas abiertas como se solicitó",
+    "Los hitos actualmente no son clickeables para marcar progreso"
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-create-a-main-dashboard-interface-in-spanish-that-displays-a-90-day-plan-for-system-creation-showing-three-main-tracks-web-development-chatbots-and-ads",
@@ -158,6 +161,38 @@
       "title": "Remove the collapsible/expandable behavior from the notes section in TaskCard so that notes are always visible and editable by default",
       "reqIds": [
         "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-each-milestone-card-in-milestonesection-clickable-so-that-clicking-anywhere-on-the-milestone-header-not-just-the-expand-collapse-icon-toggles-the-milestone-s-completion-status-via-a-checkbox",
+      "title": "Make each milestone card in MilestoneSection clickable so that clicking anywhere on the milestone header (not just the expand/collapse icon) toggles the milestone's completion status via a checkbox",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-that-each-taskcard-component-displays-its-notes-field-as-an-always-visible-always-editable-textarea-input-without-any-collapsible-expandable-behavior",
+      "title": "Ensure that each TaskCard component displays its notes field as an always-visible, always-editable textarea input without any collapsible/expandable behavior",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-verify-that-taskcard-checkboxes-correctly-toggle-task-completion-status-between-completed-on-and-not-completed-off-states-and-that-these-changes-persist-to-the-backend",
+      "title": "Verify that TaskCard checkboxes correctly toggle task completion status between completed (ON) and not completed (OFF) states, and that these changes persist to the backend",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-progressutils-ts-to-correctly-calculate-milestone-phase-and-overall-progress-based-on-task-completion-status-using-the-binary-completed-field-true-false",
+      "title": "Update progressUtils.ts to correctly calculate milestone, phase, and overall progress based on task completion status using the binary completed field (true/false)",
+      "reqIds": [
+        "REQ-29"
       ],
       "version": 1
     }

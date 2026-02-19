@@ -1,12 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Replace status dropdowns with ON/OFF checkboxes for milestone tasks and make notes always visible.
+**Goal:** Fix milestone checkbox interaction and ensure task notes are always editable.
 
 **Planned changes:**
-- Replace the status dropdown in TaskCard with a functional checkbox that toggles between completed (ON) and not completed (OFF)
-- Update backend Task status model to support binary completion tracking (completed vs not completed)
-- Update progress calculation logic to work with binary checkbox completion status
-- Remove collapsible behavior from notes section so notes are always visible and editable
+- Make milestone headers clickable to toggle completion status via checkbox
+- Display task notes as always-visible, always-editable textarea without collapsible behavior
+- Verify task checkboxes correctly toggle completion status and persist changes
+- Update progress calculations to use binary completed field (true/false) and reflect changes automatically
 
-**User-visible outcome:** Users can track task completion with simple ON/OFF checkboxes instead of dropdowns, and can immediately add or edit notes without expanding the notes section.
+**User-visible outcome:** Users can click milestone headers to mark them complete, see and edit task notes immediately without expanding, toggle task completion with checkboxes, and see accurate progress percentages that update automatically.
